@@ -185,7 +185,7 @@ risks/limitations, and what the next phase does.
 | 8 | AML rules engine (alert generation + scoring) | ✅ Complete |
 | 9 | STR case workflow (cases + SLA) | ✅ Complete |
 | 10 | Reporting views | ✅ Complete |
-| 11 | Data quality & reconciliation | ⬜ Planned |
+| 11 | Data quality & reconciliation | ✅ Complete |
 | 12 | Governance & security | ⬜ Planned |
 | 13 | Automation & Snowpark examples | ⬜ Planned |
 | 14 | Power BI integration package | ⬜ Planned |
