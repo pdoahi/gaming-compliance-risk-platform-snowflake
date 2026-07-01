@@ -179,7 +179,7 @@ risks/limitations, and what the next phase does.
 | 2 | Snowflake solution architecture | ✅ Complete |
 | 3 | Data model & ERD | ✅ Complete |
 | 4 | Snowflake setup scripts (warehouses, DB, schemas, roles) | ✅ Complete |
-| 5 | Ingestion layer (file formats, stages, RAW, COPY INTO) | ⬜ Planned |
+| 5 | Ingestion layer (file formats, stages, RAW, COPY INTO) | ✅ Complete |
 | 6 | Staging layer (typed/cleaned) | ⬜ Planned |
 | 7 | Core dimensional model (dims + facts) | ⬜ Planned |
 | 8 | AML rules engine (alert generation + scoring) | ⬜ Planned |
