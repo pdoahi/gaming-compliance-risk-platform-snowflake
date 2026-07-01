@@ -145,7 +145,7 @@ gaming-compliance-risk-platform/
   data/            raw / processed / reference synthetic data (+ disclaimer)
   snowflake/       all SQL, delivered in ordered layers:
     00_setup/        warehouses, database, schemas, roles, grants
-    01_ingestion/    file formats, stages, RAW tables, COPY INTO examples
+    01_ingestion/    file formats, stages, RAW tables, COPY INTO + synthetic data generator
     02_staging/      typed/cleaned staging tables + transformations
     03_core_model/   dimensions + facts (create & load)
     04_aml_rules/    alert-type seed, AML alert generation, scoring
@@ -155,7 +155,8 @@ gaming-compliance-risk-platform/
     08_automation/   Streams & Tasks (optional)
     09_snowpark/     Snowpark Python example (optional)
     10_powerbi/      Power BI connection guide, model, measures
-  docs/            architecture, data model, ERD, AML/STR, governance, validation, limitations
+  docs/            architecture, data model, ERD, AML/STR, governance, validation,
+                   deployment guide, limitations
   diagrams/        architecture / data_model / workflow diagrams (.mmd + .png)
   notebooks/       optional exploratory notebooks
   powerbi/         Power BI dashboard specification
@@ -189,7 +190,11 @@ risks/limitations, and what the next phase does.
 | 12 | Governance & security | ✅ Complete |
 | 13 | Automation & Snowpark examples | ✅ Complete |
 | 14 | Power BI integration package | ✅ Complete |
-| 15 | Final documentation & portfolio polish | ⬜ Planned |
+| 15 | Final documentation & portfolio polish | ✅ Complete |
+
+> **✅ All 15 phases complete.** Build it yourself with the
+> [Deployment Guide](docs/deployment_guide.md) — the in-database synthetic data generator means
+> no files to upload. Scope and caveats are in [Portfolio Limitations](docs/portfolio_limitations.md).
 
 ---
 
@@ -200,7 +205,7 @@ skills — dimensional modeling, Snowflake platform engineering, AML/STR domain 
 governance, data quality, and BI enablement — delivered with professional, phased
 documentation. It is intentionally **portfolio-safe**: synthetic data, conservative compute
 settings, and no secrets. It is a design-and-implementation reference, not a production
-system (see `docs/portfolio_limitations.md`, produced in a later phase).
+system (see [`docs/portfolio_limitations.md`](docs/portfolio_limitations.md)).
 
 ---
 
@@ -222,7 +227,12 @@ real deliverable in the repo (not just generated code):
   (`LAG`, `PERCENTILE_CONT`, `QUALIFY`), `CASE` logic, aggregations
 - **Serving:** Power BI-ready reporting views (business-named semantic layer), reconciliation
   & validation checks
-- **Coming next:** Streams & Tasks, Snowpark Python, masking/row-access policies (Phases 12–13)
+- **Governance:** data classification tags, `MP_IDENTIFIER` masking & `RAP_REGION` row-access
+  policies, extended Time Travel on restricted facts
+- **Automation & data science:** append-only Streams and a stream-gated (suspended) Task;
+  a Snowpark Python risk-scoring example (connection by name/env — no hard-coded credentials)
+- **BI enablement:** Power BI connection guide, recommended semantic model, DAX measures, and a
+  page-level dashboard specification
 
 **Learning + validation docs:**
 [Learning audit](docs/snowflake_learning_audit.md) ·
@@ -246,10 +256,13 @@ information**, and requests none. See [`data/README.md`](data/README.md).
 
 ## How to Run
 
-Snowflake scripts are added phase by phase and are designed to run **in numbered order**
-(`snowflake/00_setup` → `10_powerbi`) in a Snowflake account of your own. Full setup and
-deployment steps are documented in `docs/deployment_guide.md` (produced in a later phase).
-No script requires real credentials; you supply your own Snowflake account context.
+Scripts run **in numbered order** (`snowflake/00_setup` → `10_powerbi`) in a Snowflake account
+of your own — a [free trial](https://signup.snowflake.com/) is enough. The in-database
+generator ([`01_ingestion/05_generate_synthetic_data.sql`](snowflake/01_ingestion/05_generate_synthetic_data.sql))
+populates the RAW tables with synthetic data, so **no files need to be uploaded**. Full
+step-by-step setup, verification, cost, and teardown steps are in the
+**[Deployment Guide](docs/deployment_guide.md)**. No script requires real credentials; you
+supply your own Snowflake account context.
 
 ---
 
