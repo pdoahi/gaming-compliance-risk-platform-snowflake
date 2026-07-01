@@ -184,7 +184,7 @@ risks/limitations, and what the next phase does.
 | 7 | Core dimensional model (dims + facts) | ✅ Complete |
 | 8 | AML rules engine (alert generation + scoring) | ✅ Complete |
 | 9 | STR case workflow (cases + SLA) | ✅ Complete |
-| 10 | Reporting views | ⬜ Planned |
+| 10 | Reporting views | ✅ Complete |
 | 11 | Data quality & reconciliation | ⬜ Planned |
 | 12 | Governance & security | ⬜ Planned |
 | 13 | Automation & Snowpark examples | ⬜ Planned |
