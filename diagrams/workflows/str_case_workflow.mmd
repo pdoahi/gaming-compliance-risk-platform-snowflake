@@ -1,0 +1,28 @@
+%% STR case workflow — Gaming Compliance & Risk Platform (Snowflake edition)
+%% Canonical editable source. Render: `mmdc -i str_case_workflow.mmd -o str_case_workflow.png`
+%% or https://mermaid.live. A rendered PNG sits alongside.
+
+flowchart TD
+    A["FACT_AML_ALERTS<br/>IS_ESCALATED = TRUE"]
+    A -->|"one case per escalated transaction"| OPEN["Open case (01_generate_str_cases.sql)<br/>priority from risk score<br/>analyst by tier &#183; open date = alert date"]
+
+    OPEN --> S1["New"]
+    S1 --> S2["Under Review"]
+    S2 --> S3["Escalated"]
+    S3 --> Q{"File STR?"}
+    Q -->|"yes"| S4["STR Submitted<br/>STR_SUBMITTED_FLAG = TRUE"]
+    Q -->|"no"| CL0["Closure reason:<br/>No Further Action / False Positive / Insufficient Evidence"]
+    S4 --> S5["Closed<br/>closure = STR Filed"]
+    CL0 --> S5
+
+    subgraph SLA["SLA logic (02_case_sla_logic.sql)"]
+        L1["SLA_DAYS by priority<br/>Critical 5 / High 10 / Medium 15 / Low 20"]
+        L2["INVESTIGATION_DAYS<br/>closed: open&#8594;close &#183; open: open&#8594;as-of"]
+        L3["SLA_BREACHED = INVESTIGATION_DAYS &gt; SLA_DAYS"]
+        L1 --> L2 --> L3
+    end
+
+    OPEN -.tracked by.-> SLA
+    S5 --> F["CORE.FACT_STR_CASES"]
+    S3 -. still open .-> F
+    L3 -.writes.-> F
