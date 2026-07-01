@@ -16,11 +16,17 @@ USE SCHEMA REPORTING;
 
 /* ---- VW_EXECUTIVE_OVERVIEW : one-row program + market health --------------- */
 CREATE OR REPLACE VIEW REPORTING.VW_EXECUTIVE_OVERVIEW AS
-WITH mkt AS (   -- market totals collapse to one row
+WITH txn AS (   -- transaction totals collapse to one row
+    SELECT COUNT(*)      AS TOTAL_TRANSACTIONS,
+           SUM(AMOUNT)   AS TOTAL_TRANSACTION_VALUE
+    FROM CORE.FACT_TRANSACTIONS
+),
+mkt AS (        -- market totals collapse to one row
     SELECT SUM(TOTAL_WAGERS)                                      AS TOTAL_WAGERS,
            SUM(TOTAL_GGR)                                         AS TOTAL_GGR,
            ROUND(SUM(TOTAL_GGR) / NULLIF(SUM(TOTAL_WAGERS), 0) * 100, 2) AS HOLD_PCT,
-           MAX(ACTIVE_ACCOUNTS)                                  AS LATEST_ACTIVE_ACCOUNTS
+           MAX(ACTIVE_ACCOUNTS)                                  AS LATEST_ACTIVE_ACCOUNTS,
+           ROUND(SUM(TOTAL_GGR) / NULLIF(MAX(ACTIVE_ACCOUNTS), 0), 2)    AS GGR_PER_ACTIVE
     FROM CORE.FACT_MARKET_PERFORMANCE
 ),
 aml AS (        -- AML totals collapse to one row
@@ -33,16 +39,20 @@ strc AS (       -- STR totals collapse to one row
     SELECT COUNT(*)                                             AS TOTAL_CASES,
            SUM(IFF(s.IS_TERMINAL, 0, 1))                        AS OPEN_INVESTIGATIONS,
            SUM(IFF(c.STR_SUBMITTED_FLAG, 1, 0))                 AS STRS_SUBMITTED,
+           ROUND(100.0 * SUM(IFF(c.STR_SUBMITTED_FLAG, 1, 0)) / NULLIF(COUNT(*), 0), 1) AS STR_CONVERSION_RATE_PCT,
+           ROUND(AVG(IFF(s.IS_TERMINAL, c.INVESTIGATION_DAYS, NULL)), 1) AS AVG_INVESTIGATION_DAYS,
            ROUND(100.0 * SUM(IFF(s.IS_TERMINAL AND NOT c.SLA_BREACHED, 1, 0))
                  / NULLIF(SUM(IFF(s.IS_TERMINAL, 1, 0)), 0), 1) AS SLA_COMPLIANCE_PCT
     FROM CORE.FACT_STR_CASES c JOIN CORE.DIM_STATUS s ON s.STATUS_KEY = c.STATUS_KEY
 )
 SELECT
-    mkt.TOTAL_WAGERS, mkt.TOTAL_GGR, mkt.HOLD_PCT, mkt.LATEST_ACTIVE_ACCOUNTS,
+    txn.TOTAL_TRANSACTIONS, txn.TOTAL_TRANSACTION_VALUE,
+    mkt.TOTAL_WAGERS, mkt.TOTAL_GGR, mkt.HOLD_PCT, mkt.LATEST_ACTIVE_ACCOUNTS, mkt.GGR_PER_ACTIVE,
     aml.AML_ALERTS, aml.ESCALATED_ALERTS, aml.AVG_RISK_SCORE,
     ROUND(100.0 * aml.ESCALATED_ALERTS / NULLIF(aml.AML_ALERTS, 0), 1) AS ESCALATION_RATE_PCT,
-    strc.TOTAL_CASES, strc.OPEN_INVESTIGATIONS, strc.STRS_SUBMITTED, strc.SLA_COMPLIANCE_PCT
-FROM mkt CROSS JOIN aml CROSS JOIN strc;
+    strc.TOTAL_CASES, strc.OPEN_INVESTIGATIONS, strc.STRS_SUBMITTED,
+    strc.STR_CONVERSION_RATE_PCT, strc.AVG_INVESTIGATION_DAYS, strc.SLA_COMPLIANCE_PCT
+FROM txn CROSS JOIN mkt CROSS JOIN aml CROSS JOIN strc;
 
 /* ---- VW_MONTHLY_COMPLIANCE_TRENDS : month-grain time series ---------------- */
 CREATE OR REPLACE VIEW REPORTING.VW_MONTHLY_COMPLIANCE_TRENDS AS

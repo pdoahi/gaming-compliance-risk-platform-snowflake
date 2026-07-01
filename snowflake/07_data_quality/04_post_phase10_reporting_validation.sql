@@ -1,0 +1,105 @@
+/* ============================================================================
+   Post-Phase-10 Reporting Validation
+   Gaming Compliance & Risk Intelligence Platform (Snowflake edition)
+
+   Confirms the REPORTING views compile, return rows, do not inflate via bad
+   grain joins, and reconcile to the underlying CORE facts. Run AFTER building the
+   Phase 10 views (06_reporting/01-05).
+
+   Each check returns CHECK_NAME, STATUS ('PASS'/'FAIL'/'REVIEW'), DETAIL.
+   NOTE: Must be EXECUTED in your own Snowflake account — not run in this repo.
+   Uses WH_REPORTING. SYNTHETIC data.
+   ============================================================================ */
+
+USE ROLE DATA_ENGINEER;
+USE WAREHOUSE WH_REPORTING;
+USE DATABASE GAMING_COMPLIANCE_DB;
+
+/* ---- P1: all 11 reporting views exist / compiled -------------------------- */
+SELECT 'P1 reporting views exist' AS CHECK_NAME,
+       IFF(COUNT(*) >= 11, 'PASS', 'FAIL') AS STATUS,
+       COUNT(*)||' views' AS DETAIL
+FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_SCHEMA = 'REPORTING' AND TABLE_NAME LIKE 'VW_%';
+
+/* ---- P2: views return rows where expected --------------------------------- */
+SELECT 'P2 VW_EXECUTIVE_OVERVIEW rows'   AS CHECK_NAME, IFF(COUNT(*) = 1,'PASS','FAIL') AS STATUS, COUNT(*) AS DETAIL FROM REPORTING.VW_EXECUTIVE_OVERVIEW
+UNION ALL SELECT 'P2 VW_AML_MONITORING_SUMMARY rows', IFF(COUNT(*) = 1,'PASS','FAIL'), COUNT(*) FROM REPORTING.VW_AML_MONITORING_SUMMARY
+UNION ALL SELECT 'P2 VW_STR_WORKFLOW_SUMMARY rows',   IFF(COUNT(*) = 1,'PASS','FAIL'), COUNT(*) FROM REPORTING.VW_STR_WORKFLOW_SUMMARY
+UNION ALL SELECT 'P2 VW_ALERT_TYPOLOGY_BREAKDOWN rows',IFF(COUNT(*) BETWEEN 1 AND 11,'PASS','REVIEW'), COUNT(*) FROM REPORTING.VW_ALERT_TYPOLOGY_BREAKDOWN
+UNION ALL SELECT 'P2 VW_ANALYST_WORKLOAD rows',       IFF(COUNT(*) > 0,'PASS','REVIEW'), COUNT(*) FROM REPORTING.VW_ANALYST_WORKLOAD
+UNION ALL SELECT 'P2 VW_MARKET_PERFORMANCE rows',     IFF(COUNT(*) > 0,'PASS','FAIL'), COUNT(*) FROM REPORTING.VW_MARKET_PERFORMANCE
+UNION ALL SELECT 'P2 VW_PLAYER_RISK_PROFILE rows',    IFF(COUNT(*) > 0,'PASS','FAIL'), COUNT(*) FROM REPORTING.VW_PLAYER_RISK_PROFILE
+UNION ALL SELECT 'P2 VW_MONTHLY_COMPLIANCE_TRENDS rows',IFF(COUNT(*) > 0,'PASS','FAIL'), COUNT(*) FROM REPORTING.VW_MONTHLY_COMPLIANCE_TRENDS;
+
+/* ---- P3: no grain inflation ----------------------------------------------- */
+-- player-risk = exactly one row per player
+SELECT 'P3 player-risk one row per player' AS CHECK_NAME,
+       IFF( (SELECT COUNT(*) FROM REPORTING.VW_PLAYER_RISK_PROFILE)
+            = (SELECT COUNT(*) FROM CORE.DIM_PLAYER), 'PASS', 'FAIL') AS STATUS,
+       (SELECT COUNT(*) FROM REPORTING.VW_PLAYER_RISK_PROFILE)||' view / '
+       ||(SELECT COUNT(*) FROM CORE.DIM_PLAYER)||' players' AS DETAIL
+UNION ALL
+-- market view = one row per market month (matches the fact)
+SELECT 'P3 market view = market fact rows',
+       IFF( (SELECT COUNT(*) FROM REPORTING.VW_MARKET_PERFORMANCE)
+            = (SELECT COUNT(*) FROM CORE.FACT_MARKET_PERFORMANCE), 'PASS', 'FAIL'),
+       (SELECT COUNT(*) FROM REPORTING.VW_MARKET_PERFORMANCE)||' / '
+       ||(SELECT COUNT(*) FROM CORE.FACT_MARKET_PERFORMANCE) AS DETAIL;
+
+/* ---- P4: executive/domain metrics reconcile to the facts ------------------ */
+SELECT 'P4 exec AML_ALERTS = fact count' AS CHECK_NAME,
+       IFF( (SELECT AML_ALERTS FROM REPORTING.VW_EXECUTIVE_OVERVIEW)
+            = (SELECT COUNT(*) FROM CORE.FACT_AML_ALERTS), 'PASS', 'FAIL') AS STATUS,
+       (SELECT AML_ALERTS FROM REPORTING.VW_EXECUTIVE_OVERVIEW)||' / '
+       ||(SELECT COUNT(*) FROM CORE.FACT_AML_ALERTS) AS DETAIL
+UNION ALL
+SELECT 'P4 exec TOTAL_CASES = fact count',
+       IFF( (SELECT TOTAL_CASES FROM REPORTING.VW_EXECUTIVE_OVERVIEW)
+            = (SELECT COUNT(*) FROM CORE.FACT_STR_CASES), 'PASS', 'FAIL'),
+       (SELECT TOTAL_CASES FROM REPORTING.VW_EXECUTIVE_OVERVIEW)||' / '
+       ||(SELECT COUNT(*) FROM CORE.FACT_STR_CASES) AS DETAIL
+UNION ALL
+SELECT 'P4 exec TOTAL_TRANSACTIONS = fact count',
+       IFF( (SELECT TOTAL_TRANSACTIONS FROM REPORTING.VW_EXECUTIVE_OVERVIEW)
+            = (SELECT COUNT(*) FROM CORE.FACT_TRANSACTIONS), 'PASS', 'FAIL'),
+       (SELECT TOTAL_TRANSACTIONS FROM REPORTING.VW_EXECUTIVE_OVERVIEW)||' / '
+       ||(SELECT COUNT(*) FROM CORE.FACT_TRANSACTIONS) AS DETAIL
+UNION ALL
+SELECT 'P4 AML summary TOTAL_ALERTS = fact count',
+       IFF( (SELECT TOTAL_ALERTS FROM REPORTING.VW_AML_MONITORING_SUMMARY)
+            = (SELECT COUNT(*) FROM CORE.FACT_AML_ALERTS), 'PASS', 'FAIL'),
+       'reconcile AML summary' AS DETAIL
+UNION ALL
+SELECT 'P4 STR summary TOTAL_CASES = fact count',
+       IFF( (SELECT TOTAL_CASES FROM REPORTING.VW_STR_WORKFLOW_SUMMARY)
+            = (SELECT COUNT(*) FROM CORE.FACT_STR_CASES), 'PASS', 'FAIL'),
+       'reconcile STR summary' AS DETAIL
+UNION ALL
+SELECT 'P4 market GGR reconciles',
+       IFF( ROUND((SELECT SUM(TOTAL_GGR) FROM REPORTING.VW_MARKET_PERFORMANCE), 0)
+            = ROUND((SELECT SUM(TOTAL_GGR) FROM CORE.FACT_MARKET_PERFORMANCE), 0), 'PASS', 'FAIL'),
+       'reconcile market GGR' AS DETAIL;
+
+/* ---- P5: Power BI readiness (date/month, bands, statuses, stable columns) -- */
+SELECT 'P5 trends has month field' AS CHECK_NAME,
+       IFF(COUNT(*) > 0,'PASS','FAIL') AS STATUS, 'YEAR_MONTH present' AS DETAIL
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_SCHEMA='REPORTING' AND TABLE_NAME='VW_MONTHLY_COMPLIANCE_TRENDS' AND COLUMN_NAME='YEAR_MONTH'
+UNION ALL
+SELECT 'P5 player-risk band populated',
+       IFF(COUNT(DISTINCT COMPOSITE_RISK_BAND) > 0,'PASS','FAIL'),
+       'bands: '||LISTAGG(DISTINCT COMPOSITE_RISK_BAND, ', ')
+FROM REPORTING.VW_PLAYER_RISK_PROFILE
+UNION ALL
+SELECT 'P5 STR status groupings populated',
+       IFF(COUNT(*) > 0,'PASS','FAIL'), COUNT(*)||' status rows'
+FROM REPORTING.VW_STR_STATUS_FUNNEL
+UNION ALL
+SELECT 'P5 analyst workload populated',
+       IFF(COUNT(*) > 0,'PASS','FAIL'), COUNT(*)||' analysts'
+FROM REPORTING.VW_ANALYST_WORKLOAD;
+
+/* ---- P6: quick visual reconciliation (eyeball) ---------------------------- */
+SELECT * FROM REPORTING.VW_EXECUTIVE_OVERVIEW;                       -- one-row snapshot
+SELECT * FROM REPORTING.VW_ALERT_TYPOLOGY_BREAKDOWN ORDER BY ALERTS DESC;
+SELECT * FROM REPORTING.VW_MARKET_FISCAL_YEAR ORDER BY FISCAL_YEAR;

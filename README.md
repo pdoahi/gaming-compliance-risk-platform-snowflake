@@ -204,6 +204,37 @@ system (see `docs/portfolio_limitations.md`, produced in a later phase).
 
 ---
 
+## Snowflake Skills Demonstrated
+
+This project is being built as a **hands-on Snowflake implementation** — a way to develop
+practical, applied Snowflake skills while producing a portfolio piece. Each skill maps to a
+real deliverable in the repo (not just generated code):
+
+- **Platform:** layered database & schemas, cost-aware virtual warehouses (`AUTO_SUSPEND`),
+  least-privilege RBAC roles & grants
+- **Ingestion:** reusable file formats, internal stages, `COPY INTO` with load metadata,
+  `TRANSIENT` RAW landing
+- **Transformation:** typed STAGING with `TRY_TO_*` casts, category normalization, and
+  data-quality flags
+- **Modeling:** dimensional fact-constellation, 6 dimensions + 4 facts, surrogate keys,
+  deliberate grain management
+- **Analytics SQL:** 11 AML rule typologies, STR/SLA logic, CTEs, window functions
+  (`LAG`, `PERCENTILE_CONT`, `QUALIFY`), `CASE` logic, aggregations
+- **Serving:** Power BI-ready reporting views (business-named semantic layer), reconciliation
+  & validation checks
+- **Coming next:** Streams & Tasks, Snowpark Python, masking/row-access policies (Phases 12–13)
+
+**Learning + validation docs:**
+[Learning audit](docs/snowflake_learning_audit.md) ·
+[Skills matrix](docs/snowflake_skills_matrix.md) ·
+[Phases 1–9 audit](docs/current_state_phase_01_to_09_audit.md) ·
+[Reporting layer](docs/reporting_layer.md) ·
+[Phase 10 learning notes](docs/phase_10_reporting_views_learning_notes.md) ·
+[Pre-Phase-10 checklist](docs/pre_phase10_validation_checklist.md) ·
+[Post-Phase-10 results](docs/post_phase10_validation_results.md)
+
+---
+
 ## Data Disclaimer
 
 All data is **synthetic, fabricated, and illustrative** and is generated for demonstration
