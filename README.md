@@ -116,8 +116,9 @@ GAMING_COMPLIANCE_DB
 Cost-aware virtual warehouses (defined in Phase 4):
 `WH_INGESTION` · `WH_TRANSFORM` · `WH_REPORTING` · `WH_DATA_SCIENCE`.
 
-> The full architecture, data flow, warehouse strategy, and diagrams are produced in
-> **Phase 2** (`docs/solution_architecture.md`).
+> Full detail — layer explanation, data flow, warehouse & environment strategy, cost notes,
+> and the architecture diagram — is in [`docs/solution_architecture.md`](docs/solution_architecture.md)
+> (diagram source: [`diagrams/architecture/solution_architecture.mmd`](diagrams/architecture/solution_architecture.mmd)).
 
 ---
 
@@ -160,7 +161,7 @@ risks/limitations, and what the next phase does.
 | # | Phase | Status |
 |---|---|---|
 | 1 | Project foundation & repository setup | ✅ Complete |
-| 2 | Snowflake solution architecture | ⬜ Planned |
+| 2 | Snowflake solution architecture | ✅ Complete |
 | 3 | Data model & ERD | ⬜ Planned |
 | 4 | Snowflake setup scripts (warehouses, DB, schemas, roles) | ⬜ Planned |
 | 5 | Ingestion layer (file formats, stages, RAW, COPY INTO) | ⬜ Planned |

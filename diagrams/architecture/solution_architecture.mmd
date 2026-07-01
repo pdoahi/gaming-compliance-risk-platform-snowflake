@@ -1,0 +1,64 @@
+%% Solution architecture — Gaming Compliance & Risk Platform (Snowflake edition)
+%% Canonical, editable source. Render with mermaid-cli (`mmdc -i solution_architecture.mmd
+%% -o solution_architecture.png`) or paste into https://mermaid.live.
+%% A rendered PNG (produced in this environment via an SVG fallback) sits alongside.
+
+flowchart TD
+    classDef src   fill:#F1EFE8,stroke:#5F5E5A,color:#2C2C2A;
+    classDef ingest fill:#E6F1FB,stroke:#185FA5,color:#0C447C;
+    classDef model fill:#E1F5EE,stroke:#0F6E56,color:#04342C;
+    classDef report fill:#EEEDFE,stroke:#534AB7,color:#26215C;
+    classDef consume fill:#FAECE7,stroke:#993C1D,color:#4A1B0C;
+    classDef gov fill:#FAEEDA,stroke:#854F0B,color:#633806;
+
+    subgraph SRC["Synthetic source data (data/raw)"]
+        F1["Transaction extracts (CSV)"]
+        F2["Monthly market / GGR (CSV)"]
+        F3["Reference / seed data"]
+    end
+
+    STAGE["Snowflake internal stages<br/>@GAMING_STAGE (COPY INTO)"]:::ingest
+
+    subgraph DB["GAMING_COMPLIANCE_DB"]
+        RAW["RAW schema<br/>source-faithful landing + load metadata"]:::ingest
+        STG["STAGING schema<br/>typed · cleaned · standardized"]:::ingest
+        CORE["CORE schema<br/>DIM_* + FACT_TRANSACTIONS + FACT_MARKET_PERFORMANCE"]:::model
+        ANALYTICS["ANALYTICS schema<br/>AML rules · risk scoring · STR workflow<br/>&rarr; FACT_AML_ALERTS · FACT_STR_CASES"]:::model
+        REPORTING["REPORTING schema<br/>VW_* BI-ready views"]:::report
+        GOV["GOVERNANCE schema<br/>roles · grants · masking · row access · audit"]:::gov
+        UTIL["UTILITY schema<br/>sequences · load control · DQ results"]:::gov
+    end
+
+    subgraph BI["BI / App layer"]
+        PBI["Power BI"]:::consume
+        STREAM["Streamlit in Snowflake (future)"]:::consume
+        USERS["Compliance analysts / auditors"]:::consume
+    end
+
+    subgraph WH["Virtual warehouses — XSMALL/SMALL, AUTO_SUSPEND + AUTO_RESUME"]
+        WHI["WH_INGESTION"]
+        WHT["WH_TRANSFORM"]
+        WHR["WH_REPORTING"]
+        WHD["WH_DATA_SCIENCE"]
+    end
+
+    F1 --> STAGE
+    F2 --> STAGE
+    F3 --> STAGE
+    STAGE --> RAW --> STG --> CORE --> ANALYTICS --> REPORTING
+    REPORTING --> PBI
+    REPORTING --> STREAM
+    REPORTING --> USERS
+
+    GOV -. governs .-> DB
+    UTIL -. supports .-> STG
+    UTIL -. supports .-> ANALYTICS
+
+    WHI -. compute .-> RAW
+    WHT -. compute .-> STG
+    WHT -. compute .-> CORE
+    WHT -. compute .-> ANALYTICS
+    WHR -. compute .-> REPORTING
+    WHD -. compute .-> ANALYTICS
+
+    class F1,F2,F3 src;
