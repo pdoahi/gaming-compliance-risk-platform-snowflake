@@ -10,7 +10,8 @@ USE ROLE DATA_ENGINEER;
 USE DATABASE GAMING_COMPLIANCE_DB;
 USE SCHEMA REPORTING;
 
-/* ---- VW_STR_WORKFLOW_SUMMARY : one-row program KPIs ------------------------ */
+/* ---- VW_STR_WORKFLOW_SUMMARY : one-row program KPIs ------------------------
+   Grain: 1 row (whole-program STR KPI snapshot; no fan-out).                  */
 CREATE OR REPLACE VIEW REPORTING.VW_STR_WORKFLOW_SUMMARY AS
 SELECT
     COUNT(*)                                                     AS TOTAL_CASES,
@@ -22,7 +23,8 @@ SELECT
           / NULLIF(SUM(IFF(s.IS_TERMINAL, 1, 0)), 0), 1)         AS SLA_COMPLIANCE_PCT
 FROM CORE.FACT_STR_CASES c JOIN CORE.DIM_STATUS s ON s.STATUS_KEY = c.STATUS_KEY;
 
-/* ---- VW_SLA_PERFORMANCE : SLA + aging by priority ------------------------- */
+/* ---- VW_SLA_PERFORMANCE : SLA + aging by priority -------------------------
+   Grain: 1 row per case priority (Critical/High/Medium/Low).                 */
 CREATE OR REPLACE VIEW REPORTING.VW_SLA_PERFORMANCE AS
 SELECT
     c.CASE_PRIORITY,
@@ -39,7 +41,8 @@ FROM CORE.FACT_STR_CASES c JOIN CORE.DIM_STATUS s ON s.STATUS_KEY = c.STATUS_KEY
 GROUP BY c.CASE_PRIORITY
 ORDER BY SLA_TARGET_DAYS;
 
-/* ---- VW_ANALYST_WORKLOAD : per-analyst load ------------------------------- */
+/* ---- VW_ANALYST_WORKLOAD : per-analyst load -------------------------------
+   Grain: 1 row per analyst.                                                  */
 CREATE OR REPLACE VIEW REPORTING.VW_ANALYST_WORKLOAD AS
 SELECT
     an.ANALYST_ID, an.ANALYST_NAME, an.TEAM, an.SENIORITY,
@@ -54,7 +57,8 @@ JOIN CORE.DIM_STATUS  s  ON s.STATUS_KEY   = c.STATUS_KEY
 GROUP BY an.ANALYST_ID, an.ANALYST_NAME, an.TEAM, an.SENIORITY
 ORDER BY TOTAL_CASES DESC;
 
-/* ---- VW_STR_STATUS_FUNNEL : pipeline funnel ------------------------------- */
+/* ---- VW_STR_STATUS_FUNNEL : pipeline funnel -------------------------------
+   Grain: 1 row per workflow status (ordered by WORKFLOW_ORDER).             */
 CREATE OR REPLACE VIEW REPORTING.VW_STR_STATUS_FUNNEL AS
 SELECT s.WORKFLOW_ORDER, s.STATUS_NAME, s.STATUS_CATEGORY, COUNT(*) AS CASES
 FROM CORE.FACT_STR_CASES c JOIN CORE.DIM_STATUS s ON s.STATUS_KEY = c.STATUS_KEY

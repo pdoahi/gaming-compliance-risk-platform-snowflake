@@ -101,3 +101,46 @@ Every layer carries lineage/audit columns so activity is traceable:
 | Hard-coded region in row policy | User→entitlement mapping table |
 | ACCOUNTADMIN applies policies | Dedicated security/governance role, SoD-controlled |
 | 1–14 day retention | Multi-year record-keeping + archival tier |
+
+## 11. Demo Governance Limitations
+
+> These policies are **portfolio/demo patterns that illustrate the mechanics** of Snowflake
+> governance. They are **not** a production-ready access-control design. Read them as "here is
+> how the control works," not "here is a hardened deployment." Status: **Implemented as Demo
+> Pattern** (authored & statically reviewed; live execution pending — see
+> [`validation_results.md`](validation_results.md)).
+
+Specific limitations to be transparent about:
+
+- **Hard-coded region.** `RAP_REGION` grants the analyst role rows where `REGION_CODE =
+  'REGION-A'` — a literal. There is no user-to-region entitlement source, so every analyst sees
+  the same region regardless of who they are.
+- **Role-only logic.** Masking and row access branch solely on `CURRENT_ROLE()`. There is no
+  attribute-based access control, no per-user context, and no session policy.
+- **Masking scope is narrow.** `MP_IDENTIFIER` covers `PLAYER_ID` / `ACCOUNT_ID` only. Real PII
+  (name, DOB, email, national ID, payment instrument) is not present because the data is
+  synthetic, so the masking surface is illustrative.
+- **No audit/access-review process.** `QUERY_HISTORY` / `ACCESS_HISTORY` are referenced but no
+  access-review workflow, alerting, or periodic recertification is implemented.
+- **Elevated actor.** Policies are applied as `ACCOUNTADMIN` for convenience rather than a
+  delegated, separation-of-duties-controlled security role.
+- **No environment separation.** A single account/database; no dev/test/prod isolation or
+  change-management gate on policy changes.
+- **Not executed.** The policies have not been run/verified against a live account here; the
+  verification queries at the end of `00_setup/04_governance_policies.sql` are the source of
+  truth once you run them.
+
+## 12. Future Enhancements (toward production governance)
+
+- **Dynamic access mapping table** — a `GOVERNANCE.USER_ENTITLEMENTS` table (user → allowed
+  regions/business units) that `RAP_REGION` joins against, replacing the hard-coded region.
+- **Production-grade RBAC** — SoD-controlled security-admin role hierarchy, IdP/SSO + SCIM
+  provisioning, network policies, and periodic access recertification.
+- **Data-classification governance** — a maintained tag taxonomy with automated tag-based
+  policy propagation and a classification review process.
+- **Masking-policy expansion** — cover all true-PII columns with format-preserving or
+  tokenized masking, plus conditional masking by purpose/consent.
+- **Row-access-policy expansion** — multi-dimensional entitlements (region + product +
+  case-sensitivity), driven entirely by mapping tables.
+- **Audit history & access review** — persisted access-review evidence from `ACCESS_HISTORY`,
+  alerting on policy changes, and scheduled recertification.

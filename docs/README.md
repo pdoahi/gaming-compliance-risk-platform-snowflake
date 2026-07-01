@@ -29,6 +29,23 @@ column records which phase produced each document.
 | [`phase_10_reporting_views_learning_notes.md`](phase_10_reporting_views_learning_notes.md) | Reporting-layer learning notes | Phase 10 |
 | [`pre_phase10_validation_checklist.md`](pre_phase10_validation_checklist.md) / [`pre_phase10_validation_results.md`](pre_phase10_validation_results.md) / [`post_phase10_validation_results.md`](post_phase10_validation_results.md) | Reporting checkpoint validation | Phase 10 |
 
+### Presentation & execution readiness
+
+> The project is fully authored across 15 phases; the remaining step is **live Snowflake
+> execution**. These docs make the status honest and the next step unmistakable.
+
+| Document | Purpose |
+|---|---|
+| [`final_presentation_audit.md`](final_presentation_audit.md) | Complete vs pending, by area (classification-tagged) |
+| [`next_real_world_step.md`](next_real_world_step.md) | The exact next step: run it live in Snowflake (before any Cursor rebuild) |
+| [`manual_snowflake_test_plan.md`](manual_snowflake_test_plan.md) | Ordered run + smoke-test queries |
+| [`execution_proof_checklist.md`](execution_proof_checklist.md) | Tick-box proof of what ran |
+| [`validation_results.md`](validation_results.md) | Results template to fill after execution (placeholders only) |
+| [`screenshot_capture_guide.md`](screenshot_capture_guide.md) | Which evidence to capture after a live run |
+| [`interview_talking_points.md`](interview_talking_points.md) | Interview walkthrough + Q&A |
+| [`sql_formatting_review.md`](sql_formatting_review.md) | SQL readability review (no logic changed) |
+| [`final_readiness_checklist.md`](final_readiness_checklist.md) | Final consistency review |
+
 ## Diagrams
 
 Diagram sources (Mermaid `.mmd`) and rendered images (`.png`) live in [`../diagrams/`](../diagrams):

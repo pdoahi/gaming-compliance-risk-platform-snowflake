@@ -20,7 +20,8 @@ deliberate Snowflake choices a beginner wouldn't get for free:
   load lineage).
 - **A grain firewall** keeping market/GGR separate from transaction-level AML (dimensional-
   modeling judgement).
-- **Validation scripts** I run and interpret myself in Snowflake (the checkpoint discipline).
+- **Validation scripts** authored to be run and interpreted in Snowflake at each checkpoint
+  (the checkpoint discipline; live execution is the pending next step).
 
 ## Concepts implemented so far
 
@@ -48,31 +49,40 @@ deliberate Snowflake choices a beginner wouldn't get for free:
 | Reporting views (semantic layer) | `06_reporting/01–05` |
 | Power BI-ready views | `06_reporting/*` + `docs/reporting_layer.md` |
 
-## Concepts missing / underdeveloped (planned for later phases)
+## Concepts since implemented (Phases 12–15)
 
-| Concept | Status | Where it lands |
+These were "planned for later" during the early phases and are now **authored in the repo**
+(implemented and statically reviewed; live execution still pending — see
+[`validation_results.md`](validation_results.md)):
+
+| Concept | Status | Where it lives |
 |---|---|---|
-| Streams (change tracking) | Not yet | Phase 13 (`08_automation/01_streams.sql`) |
-| Tasks (scheduled transforms) | Not yet | Phase 13 (`08_automation/02_tasks.sql`) |
-| Snowpark Python (risk scoring) | Not yet | Phase 13 (`09_snowpark/`) |
-| Masking / row-access policies | Not yet | Phase 12 (governance) |
-| Time Travel / cloning demos | Referenced only | Phase 12 |
-| SCD Type 2 (KYC/risk history) | Roadmap documented | future enhancement (`data_model.md` §6) |
-| CI/CD deployment | Not yet | future enhancement |
+| Streams (change tracking) | ✅ Implemented (optional) | `08_automation/01_streams.sql` |
+| Tasks (scheduled transforms) | ✅ Implemented (optional, suspended) | `08_automation/02_tasks.sql` |
+| Snowpark Python (risk scoring) | ✅ Implemented (optional) | `09_snowpark/aml_risk_scoring_example.py` |
+| Masking / row-access policies | ✅ Implemented (demo pattern) | `00_setup/04_governance_policies.sql` |
+| Data-classification tags | ✅ Implemented (demo pattern) | `00_setup/04_governance_policies.sql` |
+| Time Travel / retention | ✅ Implemented (demo pattern) | `00_setup/04_governance_policies.sql` |
+| Synthetic data generator (in-DB) | ✅ Implemented | `01_ingestion/05_generate_synthetic_data.sql` |
 
-## Improvements to make later (non-blocking for Phase 10)
+## Still open (deliberate scope boundaries)
 
-- Add the **synthetic data generator + sample CSVs** so the pipeline runs end-to-end.
-- Promote **market-by-product** from STAGING into a CORE fact for product-mix reporting.
-- Replace deterministic `HASH()`-synthesized dimension attributes with a proper synthetic
-  **customer/KYC master** source.
-- Add **rejects handling** on `COPY INTO` (`ON_ERROR = CONTINUE` + a rejects table).
+| Concept | Status | Notes |
+|---|---|---|
+| SCD Type 2 (KYC/risk history) | 🗺️ Roadmap | documented in `data_model.md` §6 |
+| CI/CD deployment (dbt/native) | 🗺️ Future | out of scope for a portfolio build |
+| Zero-copy cloning demo | 🗺️ Future | Time Travel is shown; cloning is described, not scripted |
+| Rejects handling on `COPY INTO` | 🗺️ Future | generator path avoids file-load errors; `ON_ERROR=CONTINUE` + rejects table would harden the file path |
+| Real customer/KYC master source | 🗺️ Future | dimension attributes are `HASH()`-synthesized today |
 
 ## Learning trajectory
 
 Foundations (databases, warehouses, RBAC, ingestion) → transformation (staging, DQ) →
 modeling (dims/facts, surrogate keys, grain) → analytics logic (AML rules, STR SLAs, window
-functions) → serving (reporting views / semantic layer). Next: automation (Streams/Tasks),
-in-database Python (Snowpark), and governance (policies).
+functions) → serving (reporting views / semantic layer) → **automation (Streams/Tasks),
+in-database Python (Snowpark), governance (masking/row-access/tags/Time Travel), and BI
+enablement (Power BI package)**. The remaining growth step is **execution**: running the whole
+thing in a live Snowflake account and validating it (see
+[`next_real_world_step.md`](next_real_world_step.md)).
 
 See the concrete mapping in [`snowflake_skills_matrix.md`](snowflake_skills_matrix.md).

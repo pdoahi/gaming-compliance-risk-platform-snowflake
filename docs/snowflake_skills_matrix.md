@@ -29,10 +29,20 @@
 | Relationship validation | Orphan/FK checks | `snowflake/07_data_quality/00` (C-block) | Referential integrity | Rigor | ✅ Done |
 | Grain management | Market firewall; pre-agg before join | `docs/reporting_layer.md`, `06_reporting/*` | Avoid double-counting | Prevents classic BI bug | ✅ Done |
 | Power BI-ready views | Business-named `VW_*` semantic layer | `snowflake/06_reporting/*`, `docs/reporting_layer.md` | Clean BI contract | BI enablement | ✅ Done |
-| Streams (CDC) | — | `snowflake/08_automation/01` | Incremental processing | Automation depth | 🔜 Phase 13 |
-| Tasks (scheduling) | — | `snowflake/08_automation/02` | Scheduled ELT/alerts | Orchestration | 🔜 Phase 13 |
-| Snowpark Python | — | `snowflake/09_snowpark/` | In-DB risk scoring | ML/eng breadth | 🔜 Phase 13 |
-| Masking / row-access policies | — | Phase 12 governance | Protect sensitive fields | Governance depth | 🔜 Phase 12 |
+| Streams (CDC) | Append-only stream on transactions | `snowflake/08_automation/01` | Incremental processing | Automation depth | ✅ Done (optional) |
+| Tasks (scheduling) | Stream-gated task, suspended by default | `snowflake/08_automation/02` | Scheduled ELT/alerts | Orchestration | ✅ Done (optional) |
+| Snowpark Python | Feature-eng + heuristic risk score | `snowflake/09_snowpark/` | In-DB risk scoring | ML/eng breadth | ✅ Done (optional) |
+| Masking / row-access policies | `MP_IDENTIFIER` mask + `RAP_REGION` row policy | `snowflake/00_setup/04` | Protect sensitive fields | Governance depth | ✅ Done (demo pattern) |
+| Classification tags | `DATA_CLASSIFICATION` + `PII` tags | `snowflake/00_setup/04` | Find/govern sensitive data | Governance literacy | ✅ Done (demo pattern) |
+| Time Travel / retention | 14-day retention on RESTRICTED facts | `snowflake/00_setup/04` | Point-in-time audit/recovery | Audit awareness | ✅ Done (demo pattern) |
+| Synthetic data generation | In-DB generator (no files needed) | `snowflake/01_ingestion/05` | Make the pipeline runnable | Reproducibility | ✅ Done |
+| Power BI integration package | Connection guide + model + DAX + dashboard spec | `snowflake/10_powerbi/`, `powerbi/` | BI enablement | Semantic-layer delivery | ✅ Done |
 | SCD Type 2 | Roadmap only | `docs/data_model.md` §6 | Historical KYC/risk | Audit-grade modeling | 🗺️ Roadmap |
 
-Legend: ✅ implemented · 🔜 planned in a specific phase · 🗺️ documented roadmap.
+Legend: ✅ implemented · "(optional)" = portfolio extra, not on the critical path · "(demo pattern)" = illustrative governance, not production access control · 🗺️ documented roadmap.
+
+> **Status vs. execution.** "✅ Done" here means the SQL/code is **authored and statically
+> reviewed** and present in the repo. It does **not** mean it has been executed against a live
+> Snowflake account — that is a separate, pending step. See
+> [`validation_results.md`](validation_results.md) and
+> [`execution_proof_checklist.md`](execution_proof_checklist.md) for the honest execution status.

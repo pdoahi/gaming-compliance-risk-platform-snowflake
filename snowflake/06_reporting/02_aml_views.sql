@@ -10,7 +10,8 @@ USE ROLE DATA_ENGINEER;
 USE DATABASE GAMING_COMPLIANCE_DB;
 USE SCHEMA REPORTING;
 
-/* ---- VW_AML_MONITORING_SUMMARY : one-row AML KPIs -------------------------- */
+/* ---- VW_AML_MONITORING_SUMMARY : one-row AML KPIs --------------------------
+   Grain: 1 row (whole-program AML KPI snapshot; no fan-out).                  */
 CREATE OR REPLACE VIEW REPORTING.VW_AML_MONITORING_SUMMARY AS
 SELECT
     COUNT(*)                                                   AS TOTAL_ALERTS,
@@ -24,7 +25,9 @@ SELECT
 FROM CORE.FACT_AML_ALERTS a
 JOIN CORE.DIM_ALERT_TYPE at ON at.ALERT_TYPE_KEY = a.ALERT_TYPE_KEY;
 
-/* ---- VW_ALERT_TYPOLOGY_BREAKDOWN : per-rule detail ------------------------- */
+/* ---- VW_ALERT_TYPOLOGY_BREAKDOWN : per-rule detail -------------------------
+   Grain: 1 row per alert typology (rule R01–R11). LEFT JOIN keeps zero-alert
+   rules so every rule is represented.                                         */
 CREATE OR REPLACE VIEW REPORTING.VW_ALERT_TYPOLOGY_BREAKDOWN AS
 SELECT
     at.RULE_CODE,

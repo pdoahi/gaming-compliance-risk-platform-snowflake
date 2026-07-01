@@ -192,9 +192,43 @@ risks/limitations, and what the next phase does.
 | 14 | Power BI integration package | ✅ Complete |
 | 15 | Final documentation & portfolio polish | ✅ Complete |
 
-> **✅ All 15 phases complete.** Build it yourself with the
-> [Deployment Guide](docs/deployment_guide.md) — the in-database synthetic data generator means
-> no files to upload. Scope and caveats are in [Portfolio Limitations](docs/portfolio_limitations.md).
+> **✅ All 15 build phases complete** — every layer is authored, documented, and statically
+> reviewed. **Live Snowflake execution and validation are the pending next step** (see
+> [Validation and Execution Status](#validation-and-execution-status)). Build it yourself with
+> the [Deployment Guide](docs/deployment_guide.md) — the in-database synthetic data generator
+> means no files to upload. Scope and caveats: [Portfolio Limitations](docs/portfolio_limitations.md).
+
+---
+
+## Validation and Execution Status
+
+The Snowflake SQL implementation scripts are **prepared for execution**. **Manual Snowflake
+execution and validation are required before claiming the platform has been fully tested.** No
+script has been executed against a live account from this environment, so **no check is claimed
+as passed** — the validation scripts are authored and statically reviewed only.
+
+**Status: `Pending Manual Snowflake Execution`.**
+
+**Next real-world step:** execute the project in Snowflake, run validation checks, capture proof
+screenshots, and update [`docs/validation_results.md`](docs/validation_results.md).
+
+| Resource | Purpose |
+|---|---|
+| [`docs/next_real_world_step.md`](docs/next_real_world_step.md) | The exact next step: run it live in Snowflake, then Cursor later |
+| [`docs/manual_snowflake_test_plan.md`](docs/manual_snowflake_test_plan.md) | Ordered run + smoke-test queries |
+| [`docs/execution_proof_checklist.md`](docs/execution_proof_checklist.md) | Tick-box proof of what ran |
+| [`docs/validation_results.md`](docs/validation_results.md) | Results template to fill in after execution |
+| [`docs/final_presentation_audit.md`](docs/final_presentation_audit.md) | What's complete vs pending |
+
+## Execution Evidence
+
+_Status: **Pending** — no execution screenshots exist yet, and none are fabricated._
+
+After you run the platform in Snowflake, capture the evidence listed in
+[`docs/screenshot_capture_guide.md`](docs/screenshot_capture_guide.md) (database/schema layout,
+populated tables, AML alerts by typology, STR cases, reporting views returning rows, validation
+results, and Snowsight query history), add the images under `docs/evidence/`, and link them
+here with the execution date.
 
 ---
 
@@ -206,6 +240,27 @@ governance, data quality, and BI enablement — delivered with professional, pha
 documentation. It is intentionally **portfolio-safe**: synthetic data, conservative compute
 settings, and no secrets. It is a design-and-implementation reference, not a production
 system (see [`docs/portfolio_limitations.md`](docs/portfolio_limitations.md)).
+
+## Portfolio Scope and Limitations
+
+**What this project demonstrates**
+
+- A layered, **production-style** Snowflake implementation pattern (RAW → STAGING → CORE →
+  REPORTING → BI) built as a **cloud data warehouse simulation**.
+- Dimensional modeling, explainable AML rule logic, an STR workflow with SLAs, a **Power
+  BI-ready semantic layer**, governance demo patterns, and a data-quality/validation framework.
+
+**What it does *not* claim to be**
+
+- Not `production-ready`, `regulator-ready`, `enterprise-grade`, or `fully validated`.
+- Governance is an **illustrative demo pattern**, not a hardened access-control design.
+- All data is **synthetic**; there is no real customer/player data and no regulatory-system
+  integration.
+- The scripts are **prepared for manual Snowflake execution** and have **not** been run/tested
+  live from this environment — see [Validation and Execution Status](#validation-and-execution-status).
+
+In short: a **synthetic compliance-analytics platform** and Snowflake implementation pattern,
+honest about the gap between a portfolio build and a production system.
 
 ---
 

@@ -16,7 +16,7 @@ RAW → STAGING → CORE / ANALYTICS → REPORTING → BI / APP LAYER
 | Folder | Contents | Phase |
 |---|---|---|
 | `00_setup/` | Warehouses, database, schemas, roles, grants | 4 |
-| `01_ingestion/` | File formats, stages, RAW tables, `COPY INTO` examples | 5 |
+| `01_ingestion/` | File formats, stages, RAW tables, `COPY INTO` + in-DB synthetic data generator | 5 / 15 |
 | `02_staging/` | Typed / cleaned staging tables + transformations | 6 |
 | `03_core_model/` | Dimensions + facts (create & load) | 7 |
 | `04_aml_rules/` | Alert-type seed, AML alert generation, scoring | 8 |
@@ -39,3 +39,10 @@ GAMING_COMPLIANCE_DB
 - Cost-aware compute: `XSMALL`/`SMALL` warehouses, `AUTO_SUSPEND`, `AUTO_RESUME`.
 - No hardcoded credentials or secrets — you supply your own account context.
 - All data is synthetic and clearly labelled.
+
+## Execution status
+
+These scripts are **authored and statically reviewed** but **not yet executed** against a live
+Snowflake account. Status: **Pending Manual Snowflake Execution.** To run the whole platform in
+order, follow [`../docs/deployment_guide.md`](../docs/deployment_guide.md); record outcomes in
+[`../docs/validation_results.md`](../docs/validation_results.md).

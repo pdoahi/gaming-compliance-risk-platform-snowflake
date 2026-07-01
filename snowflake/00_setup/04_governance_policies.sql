@@ -12,6 +12,17 @@
 
    ⚠️ SYNTHETIC data only. There is no real PII here — these policies DEMONSTRATE
    the controls a real regulated deployment would use. No secrets appear anywhere.
+
+   ⚠️ DEMO GOVERNANCE PATTERN — NOT production access control. Specifically:
+     - The row-access policy hard-codes an allowed region ('REGION-A') for the
+       analyst role. Production would resolve entitlements from a user→region
+       MAPPING TABLE (or identity-provider claims), not a literal.
+     - Masking/row-access are keyed off CURRENT_ROLE() only. Production would add
+       SoD-controlled security roles, IdP/SSO + SCIM, audit logging/access review,
+       environment separation (dev/prod), and formal data-classification governance.
+     - ACCOUNTADMIN is used for convenience; production delegates to a dedicated,
+       least-privilege security/governance role.
+   See docs/governance_model.md → "Demo Governance Limitations" for the full list.
    ============================================================================ */
 
 USE ROLE ACCOUNTADMIN;                 -- or a role granted CREATE MASKING/ROW ACCESS POLICY + CREATE TAG
