@@ -122,6 +122,21 @@ Cost-aware virtual warehouses (defined in Phase 4):
 
 ---
 
+## Data Model Overview
+
+A **fact-constellation (galaxy) schema** — 6 conformed dimensions and 4 fact tables. The core
+lineage is `Player / Account → Transaction → AML Alert → Investigation Case → STR Outcome`;
+`FACT_MARKET_PERFORMANCE` sits beside it at a monthly grain, sharing only `DIM_DATE` (a grain
+firewall so market/GGR is never blended with transaction-level AML metrics).
+
+![Logical ERD — 6 dimensions, 4 facts](diagrams/data_model/logical_erd.png)
+
+Full detail — every dimension & fact (grain, keys, measures, additivity, SCD strategy), the
+physical column-level ERD, and the **SCD Type 2 roadmap** for player/account risk and KYC
+history — is in [`docs/data_model.md`](docs/data_model.md) and [`docs/erd.md`](docs/erd.md).
+
+---
+
 ## Repository Layout
 
 ```text
@@ -162,7 +177,7 @@ risks/limitations, and what the next phase does.
 |---|---|---|
 | 1 | Project foundation & repository setup | ✅ Complete |
 | 2 | Snowflake solution architecture | ✅ Complete |
-| 3 | Data model & ERD | ⬜ Planned |
+| 3 | Data model & ERD | ✅ Complete |
 | 4 | Snowflake setup scripts (warehouses, DB, schemas, roles) | ⬜ Planned |
 | 5 | Ingestion layer (file formats, stages, RAW, COPY INTO) | ⬜ Planned |
 | 6 | Staging layer (typed/cleaned) | ⬜ Planned |

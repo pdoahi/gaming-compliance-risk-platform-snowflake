@@ -1,0 +1,93 @@
+%% Logical ERD — Gaming Compliance & Risk Platform (Snowflake edition)
+%% Canonical editable source. Render: `mmdc -i logical_erd.mmd -o logical_erd.png`
+%% or paste into https://mermaid.live. A rendered PNG sits alongside.
+
+erDiagram
+    DIM_PLAYER   ||--o{ DIM_ACCOUNT        : "owns"
+    DIM_PLAYER   ||--o{ FACT_TRANSACTIONS  : "transacts"
+    DIM_ACCOUNT  ||--o{ FACT_TRANSACTIONS  : "originates"
+    DIM_DATE     ||--o{ FACT_TRANSACTIONS  : "dated"
+
+    FACT_TRANSACTIONS ||--o{ FACT_AML_ALERTS : "triggers"
+    DIM_ALERT_TYPE    ||--o{ FACT_AML_ALERTS : "classifies"
+    DIM_PLAYER        ||--o{ FACT_AML_ALERTS : "subject of"
+    DIM_STATUS        ||--o{ FACT_AML_ALERTS : "status"
+    DIM_DATE          ||--o{ FACT_AML_ALERTS : "dated"
+
+    FACT_AML_ALERTS ||--o{ FACT_STR_CASES : "escalates to"
+    DIM_ANALYST     ||--o{ FACT_STR_CASES : "assigned"
+    DIM_STATUS      ||--o{ FACT_STR_CASES : "status"
+    DIM_PLAYER      ||--o{ FACT_STR_CASES : "subject of"
+    DIM_DATE        ||--o{ FACT_STR_CASES : "opened / closed"
+
+    DIM_DATE ||--o{ FACT_MARKET_PERFORMANCE : "month (grain-separate)"
+
+    DIM_DATE {
+        number DATE_KEY PK
+        date   FULL_DATE
+        string YEAR_MONTH
+        number FISCAL_YEAR
+    }
+    DIM_PLAYER {
+        number  PLAYER_KEY PK
+        string  PLAYER_ID
+        string  KYC_STATUS "SCD2 candidate"
+        string  KYC_RISK_LEVEL "SCD2 candidate"
+        boolean PEP_FLAG
+        boolean WATCHLIST_FLAG
+    }
+    DIM_ACCOUNT {
+        number PACCOUNT_KEY PK
+        string ACCOUNT_ID
+        number PLAYER_KEY FK
+        string ACCOUNT_STATUS "SCD2 candidate"
+        string ACCOUNT_RISK_RATING "SCD2 candidate"
+    }
+    DIM_ALERT_TYPE {
+        number ALERT_TYPE_KEY PK
+        string RULE_CODE
+        string TYPOLOGY
+        number BASE_RISK_SCORE
+    }
+    DIM_STATUS {
+        number  STATUS_KEY PK
+        string  STATUS_CODE
+        number  WORKFLOW_ORDER
+        boolean IS_TERMINAL
+    }
+    DIM_ANALYST {
+        number ANALYST_KEY PK
+        string ANALYST_ID
+        string TEAM
+    }
+    FACT_TRANSACTIONS {
+        number TRANSACTION_KEY PK
+        number DATE_KEY FK
+        number PLAYER_KEY FK
+        number ACCOUNT_KEY FK
+        number AMOUNT "additive"
+        string TRANSACTION_TYPE
+    }
+    FACT_AML_ALERTS {
+        number  ALERT_KEY PK
+        number  TRANSACTION_KEY FK
+        number  ALERT_TYPE_KEY FK
+        number  STATUS_KEY FK
+        number  RISK_SCORE "non-additive"
+        boolean IS_ESCALATED
+    }
+    FACT_STR_CASES {
+        number  CASE_KEY PK
+        number  ALERT_KEY FK
+        number  ANALYST_KEY FK
+        number  STATUS_KEY FK
+        number  SLA_DAYS
+        boolean STR_SUBMITTED_FLAG
+    }
+    FACT_MARKET_PERFORMANCE {
+        number MARKET_PERF_KEY PK
+        number DATE_KEY FK
+        number TOTAL_WAGERS "additive"
+        number TOTAL_GGR "additive"
+        number HOLD_PCT "non-additive"
+    }
