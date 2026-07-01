@@ -1,0 +1,42 @@
+%% AML alert workflow — Gaming Compliance & Risk Platform (Snowflake edition)
+%% Canonical editable source. Render: `mmdc -i aml_alert_workflow.mmd -o aml_alert_workflow.png`
+%% or https://mermaid.live. A rendered PNG sits alongside.
+
+flowchart TD
+    T["FACT_TRANSACTIONS<br/>one row per transaction"]
+
+    subgraph RULES["11 rule typologies (02_generate_aml_alerts.sql)"]
+        R1["R01 Large txn"]
+        R2["R02 Structuring"]
+        R3["R03 Rapid movement"]
+        R4["R04 High velocity"]
+        R5["R05 Repeated sub-threshold"]
+        R6["R06 High-risk method"]
+        R7["R07 Unusual spike"]
+        R8["R08 Dormant reactivation"]
+        R9["R09 High-risk customer"]
+        R10["R10 Concentration"]
+        R11["R11 Sanctions / watchlist"]
+    end
+
+    T --> RULES
+    RULES -->|"match: one alert per (txn x rule)"| ALERT["Create alert<br/>base risk score from DIM_ALERT_TYPE"]
+
+    ALERT --> SCORE["Scoring (03_alert_scoring_logic.sql)<br/>+10 multiple typologies<br/>+10 PEP / watchlist / High KYC-risk<br/>(cap 100)"]
+    SCORE --> SEV{"Severity band"}
+    SEV -->|"&gt;=90"| CRIT["Critical"]
+    SEV -->|"70-89"| HIGH["High"]
+    SEV -->|"40-69"| MED["Medium"]
+    SEV -->|"&lt;40"| LOW["Low"]
+
+    CRIT --> ESC{"score &gt;= 70 ?"}
+    HIGH --> ESC
+    MED  --> ESC
+    LOW  --> ESC
+
+    ESC -->|"yes"| E1["IS_ESCALATED = TRUE<br/>status = Escalated"]
+    ESC -->|"no"|  E0["status = New / Under Review"]
+
+    E1 --> F["CORE.FACT_AML_ALERTS"]
+    E0 --> F
+    E1 -.escalated alerts feed.-> STR["STR case workflow (Phase 9)"]

@@ -182,7 +182,7 @@ risks/limitations, and what the next phase does.
 | 5 | Ingestion layer (file formats, stages, RAW, COPY INTO) | ✅ Complete |
 | 6 | Staging layer (typed/cleaned) | ✅ Complete |
 | 7 | Core dimensional model (dims + facts) | ✅ Complete |
-| 8 | AML rules engine (alert generation + scoring) | ⬜ Planned |
+| 8 | AML rules engine (alert generation + scoring) | ✅ Complete |
 | 9 | STR case workflow (cases + SLA) | ⬜ Planned |
 | 10 | Reporting views | ⬜ Planned |
 | 11 | Data quality & reconciliation | ⬜ Planned |
