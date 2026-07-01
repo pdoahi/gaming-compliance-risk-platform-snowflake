@@ -186,7 +186,7 @@ risks/limitations, and what the next phase does.
 | 9 | STR case workflow (cases + SLA) | ✅ Complete |
 | 10 | Reporting views | ✅ Complete |
 | 11 | Data quality & reconciliation | ✅ Complete |
-| 12 | Governance & security | ⬜ Planned |
+| 12 | Governance & security | ✅ Complete |
 | 13 | Automation & Snowpark examples | ⬜ Planned |
 | 14 | Power BI integration package | ⬜ Planned |
 | 15 | Final documentation & portfolio polish | ⬜ Planned |
