@@ -188,7 +188,7 @@ risks/limitations, and what the next phase does.
 | 11 | Data quality & reconciliation | ✅ Complete |
 | 12 | Governance & security | ✅ Complete |
 | 13 | Automation & Snowpark examples | ✅ Complete |
-| 14 | Power BI integration package | ⬜ Planned |
+| 14 | Power BI integration package | ✅ Complete |
 | 15 | Final documentation & portfolio polish | ⬜ Planned |
 
 ---
