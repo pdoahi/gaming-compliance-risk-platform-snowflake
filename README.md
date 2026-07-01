@@ -178,7 +178,7 @@ risks/limitations, and what the next phase does.
 | 1 | Project foundation & repository setup | ✅ Complete |
 | 2 | Snowflake solution architecture | ✅ Complete |
 | 3 | Data model & ERD | ✅ Complete |
-| 4 | Snowflake setup scripts (warehouses, DB, schemas, roles) | ⬜ Planned |
+| 4 | Snowflake setup scripts (warehouses, DB, schemas, roles) | ✅ Complete |
 | 5 | Ingestion layer (file formats, stages, RAW, COPY INTO) | ⬜ Planned |
 | 6 | Staging layer (typed/cleaned) | ⬜ Planned |
 | 7 | Core dimensional model (dims + facts) | ⬜ Planned |
