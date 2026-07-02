@@ -31,15 +31,24 @@ r02 AS (
         SELECT TRANSACTION_KEY, COUNT(*) OVER (PARTITION BY ACCOUNT_KEY) AS c
         FROM tx WHERE AMOUNT >= 9000 AND AMOUNT < 10000)
     WHERE c >= 3),
-/* R03 Rapid movement: deposit then >=90% withdrawal within 6h */
+/* R03 Rapid movement: deposit then >=90% withdrawal within 6h.
+   Semi-join (EXISTS), NOT a plain join: a withdrawal that matches several prior
+   deposits must still yield exactly ONE alert. A plain join fans out to one row
+   per matching deposit -> duplicate (txn x rule) rows / duplicate ALERT_IDs and a
+   spurious "multiple typologies" +10 in scoring. EXISTS flags the same set of
+   withdrawals without the duplication. */
 r03 AS (
     SELECT w.TRANSACTION_KEY, 3 AS ALERT_TYPE_KEY
-    FROM tx d JOIN tx w
-      ON w.ACCOUNT_KEY = d.ACCOUNT_KEY
-     AND d.TRANSACTION_TYPE = 'Deposit' AND w.TRANSACTION_TYPE = 'Withdrawal'
-     AND w.TRANSACTION_TIMESTAMP >  d.TRANSACTION_TIMESTAMP
-     AND w.TRANSACTION_TIMESTAMP <= DATEADD(hour, 6, d.TRANSACTION_TIMESTAMP)
-     AND w.AMOUNT >= 0.90 * d.AMOUNT),
+    FROM tx w
+    WHERE w.TRANSACTION_TYPE = 'Withdrawal'
+      AND EXISTS (
+          SELECT 1 FROM tx d
+          WHERE d.ACCOUNT_KEY = w.ACCOUNT_KEY
+            AND d.TRANSACTION_TYPE = 'Deposit'
+            AND w.TRANSACTION_TIMESTAMP >  d.TRANSACTION_TIMESTAMP
+            AND w.TRANSACTION_TIMESTAMP <= DATEADD(hour, 6, d.TRANSACTION_TIMESTAMP)
+            AND w.AMOUNT >= 0.90 * d.AMOUNT
+      )),
 /* R04 High velocity: >=8 txns per account per day */
 r04 AS (
     SELECT TRANSACTION_KEY, 4 AS ALERT_TYPE_KEY FROM (
