@@ -7,10 +7,10 @@
 **Classification legend:** `Complete` · `Needs Update` · `Pending Manual Execution` ·
 `Portfolio Enhancement` · `Future Enhancement`
 
-**Overall status:** the platform is **fully authored, documented across all 15 phases, and now
-executed** — run in a Snowflake trial on **2026-07-02** with a **18/18** setup verification
-([`validation_results.md`](validation_results.md); all 11 AML typologies firing). Remaining:
-evidence screenshots and the optional deeper reconciliation scripts.
+**Overall status:** the platform is **fully authored, documented across all 15 phases, executed,
+and validated** — run in a Snowflake trial on **2026-07-02** and passing **18/18 setup
+verification + 21/21 reconciliation/DQ** ([`validation_results.md`](validation_results.md); all 11
+AML typologies firing, every layer reconciling). Remaining: evidence screenshots.
 
 ---
 
@@ -86,7 +86,7 @@ evidence screenshots and the optional deeper reconciliation scripts.
 | Item | Classification |
 |---|---|
 | Run the full pipeline live in Snowflake | ✅ Done (2026-07-02, 18/18) |
-| Run deeper reconciliation scripts (`07_data_quality/00–04`) | Pending (optional) |
+| Run reconciliation / DQ verification | ✅ Done (21/21) |
 | Capture evidence screenshots | Pending |
 | Build the actual Power BI `.pbix` | Portfolio Enhancement |
 | SCD Type 2, CI/CD, dynamic entitlement mapping | Future Enhancement |

@@ -22,12 +22,12 @@
 | Platform executed live in Snowflake | ✅ Done | `validation_results.md` (2026-07-02, 18/18) | Full pipeline ran; all 11 typologies firing |
 | Live validation results recorded | ✅ Done | `validation_results.md` (real numbers, 2026-07-02) | Actual run output, not placeholders |
 | Execution evidence (screenshots) present | ⏳ Pending | `screenshot_capture_guide.md`; README "Execution Evidence" | Textual 18/18 grid recorded; images still to capture |
-| Deeper reconciliation scripts run | ⏳ Optional | `07_data_quality/00–04` | Setup verification passed; these are the optional next layer |
+| Reconciliation / DQ verification run | ✅ Done | `07_data_quality/06` (21/21, 2026-07-02) | R1–R8 + integrity all PASS |
 
 ## Summary
 
-**Presentation-ready — and now executed.** The platform was run in a Snowflake trial on
-2026-07-02 with a clean **18/18** setup verification
-([`validation_results.md`](validation_results.md); all 11 AML typologies firing). The remaining
-polish is capturing evidence screenshots and, optionally, the deeper reconciliation scripts; the
-Cursor rebuild stays a later exercise ([`next_real_world_step.md`](next_real_world_step.md)).
+**Presentation-ready — executed and validated.** The platform was run in a Snowflake trial on
+2026-07-02 and passed **18/18 setup verification + 21/21 reconciliation/DQ**
+([`validation_results.md`](validation_results.md); all 11 AML typologies firing, every layer
+reconciling). The only remaining polish is capturing evidence screenshots; the Cursor rebuild
+stays a later exercise ([`next_real_world_step.md`](next_real_world_step.md)).

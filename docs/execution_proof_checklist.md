@@ -1,10 +1,10 @@
 # Execution Proof Checklist
 
-> **Status: `Executed — 2026-07-02`.** Sections A–C (environment, build, smoke tests) were
-> completed in a Snowflake trial and verified by the **18/18 setup-verification grid** (recorded
-> in [`validation_results.md`](validation_results.md)). Remaining: **D** (deeper DQ /
-> reconciliation scripts, optional), **F** (evidence screenshots), **G** (repo-evidence links).
-> The boxes below track those remaining items — tick them as you complete them; don't pre-tick.
+> **Status: `Executed & validated — 2026-07-02`.** Sections A–D were completed in a Snowflake
+> trial: build + smoke tests via the **18/18 setup-verification grid**, and reconciliation/DQ via
+> the **21/21 grid** (both recorded in [`validation_results.md`](validation_results.md)).
+> Remaining: **F** (evidence screenshots) and **G** (repo-evidence links). Tick the boxes below as
+> you complete them; don't pre-tick.
 
 Legend: `[ ]` not done · `[~]` in progress · `[x]` done (with evidence).
 
@@ -67,6 +67,6 @@ Legend: `[ ]` not done · `[~]` in progress · `[x]` done (with evidence).
 
 ---
 
-**Sign-off:** executed by the repository owner on **2026-07-02**; setup-verification result
-**18/18 PASS** (build + smoke tests, all 11 AML typologies firing). Deeper reconciliation scripts
-and evidence screenshots remain.
+**Sign-off:** executed by the repository owner on **2026-07-02**; **18/18 setup verification +
+21/21 reconciliation/DQ, all PASS** (all 11 AML typologies firing; two defects found & fixed —
+R10 concentration, R03 duplicate alerts). Evidence screenshots remain.

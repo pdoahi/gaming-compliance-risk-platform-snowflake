@@ -40,7 +40,7 @@
 | 7 | DIM_ALERT_TYPE rows | 11 | 11 | PASS |
 | 8 | FACT_TRANSACTIONS rows | 5,310 | ~5,300 | PASS |
 | 9 | FACT_MARKET_PERFORMANCE months | 36 | 36 | PASS |
-| 10 | FACT_AML_ALERTS rows | 5,820 | > 0 | PASS |
+| 10 | FACT_AML_ALERTS rows | 5,749 | > 0 | PASS |
 | 11 | AML typologies firing (distinct) | 11 | 11 | PASS |
 | 12 | Escalated alerts | > 0 | > 0 | PASS |
 | 13 | FACT_STR_CASES rows | 3,051 | > 0 | PASS |
@@ -50,26 +50,37 @@
 | 17 | VW_STR_WORKFLOW_SUMMARY rows | 1 | 1 | PASS |
 | 18 | VW_MARKET_PERFORMANCE rows | 36 | 36 | PASS |
 
-**Headline numbers:** RAW = 5,310 · FACT_TRANSACTIONS = 5,310 · FACT_AML_ALERTS = 5,820
-(all **11** typologies) · FACT_STR_CASES = 3,051 · Market = 36 months · all reporting views live.
+**Headline numbers (final, post-fixes):** RAW = 5,310 · FACT_TRANSACTIONS = 5,310 ·
+FACT_AML_ALERTS = 5,749 (all **11** typologies) · FACT_STR_CASES = 3,051 · Market = 36 months ·
+all reporting views live.
 
-## 3. Issue found & fixed during execution
+## 3. Issues found & fixed during execution & validation
 
 | Issue | Layer | Root cause | Fix | Result |
 |---|---|---|---|---|
-| Rule **R10** (counterparty concentration) fired 0 alerts → only 10 typologies | AML generation | The run initially used a **pre-fix copy** of the generator whose concentration cohort funnelled to an **external** payee (`A99999`), which the fact loader resolves to a **NULL** `COUNTERPARTY_ACCOUNT_KEY`; R10 filters `IS NOT NULL`. | Applied the committed fix (concentration routes to an **internal** account `A00007` that exists in `DIM_ACCOUNT`; commit `f61a6ee`), re-ran `01_ingestion/05` → core loads → `04_aml_rules`. | **R10 now generates 57 alerts**; all **11** typologies active → 18/18. |
+| Rule **R10** (counterparty concentration) fired 0 alerts → only 10 typologies | AML generation | The run initially used a **pre-fix copy** of the generator whose concentration cohort funnelled to an **external** payee (`A99999`), which the fact loader resolves to a **NULL** `COUNTERPARTY_ACCOUNT_KEY`; R10 filters `IS NOT NULL`. | Concentration routes to an **internal** account `A00007` that exists in `DIM_ACCOUNT` (commit `f61a6ee`); re-ran generator → core → `04_aml_rules`. | **R10 generates 57 alerts**; all **11** typologies active → 18/18. |
+| **71 duplicate `ALERT_ID`s** in `FACT_AML_ALERTS` (DQ check FAIL) | AML generation | Rule **R03** (rapid movement) was a **self-join**, emitting one row per matching prior deposit; a withdrawal matching several deposits produced duplicate `(txn × R03)` rows — and inflated the scoring step's multi-typology `COUNT(*) > 1` modifier. | Rewrote R03 as an **`EXISTS` semi-join** so each qualifying withdrawal yields exactly one alert (commit `b1c6b14`); re-ran `04_aml_rules/02,03` + `05_str_workflow`. | Duplicates → **0**; alerts 5,820 → **5,749**; cases unchanged (3,051) → **21/21**. |
 
-> This exact failure was predicted in [`pre_flight_dry_run_review.md`](pre_flight_dry_run_review.md);
-> the live run confirmed it and the committed fix resolved it.
+> The R10 failure was predicted in [`pre_flight_dry_run_review.md`](pre_flight_dry_run_review.md)
+> and confirmed live; the R03 duplication was caught by the reconciliation/DQ verification
+> (`07_data_quality/06`) — exactly what that layer is for.
 
-## 4. What was verified vs. still optional
+## 4. Reconciliation & data-quality verification (21/21 PASS)
 
-- **Verified (this run):** end-to-end build, all four facts populated, all 11 AML typologies
-  firing, STR cases generated, all reporting views returning — via the 18-check setup
-  verification.
-- **Optional next validation layer (not yet run):** the deeper reconciliation / DQ scripts in
-  `snowflake/07_data_quality/00–04` (R1–R8 reconciliation, P1–P6 reporting checks, per-phase
-  gates). Recommended for completeness; record their `STATUS` output here when run.
+The consolidated reconciliation/DQ grid
+([`07_data_quality/06_reconciliation_verification.sql`](../snowflake/07_data_quality/06_reconciliation_verification.sql))
+passed **21/21**:
+
+- **R1–R8 reconciliation — all PASS.** Counts and values tie end-to-end: RAW→STAGING→CORE
+  (5,310), market (36), transaction value (32,157,132.00 = 32,157,132.00), alerts CORE = view
+  (5,749), cases CORE = view (3,051), GGR CORE = view (1,630,980,000), cases ≤ escalated txns
+  with **0** from non-escalated, and the executive view ties to the facts.
+- **DQ integrity — all PASS.** No duplicate transaction/alert/case IDs, no null keys, no orphans,
+  SLA logic consistent, market months contiguous (max gap 1), no negative values, 11 reporting
+  views present.
+
+**Together: 18/18 setup verification + 21/21 reconciliation/DQ** = the platform is fully
+validated on synthetic data.
 
 ## 5. Evidence
 
@@ -80,7 +91,7 @@
 
 ## 6. Final verdict
 
-**Executed and health-checked: 18/18 PASS.** The platform runs end to end on synthetic data in a
-live Snowflake account, with all AML typologies, the STR workflow, and the reporting layer
-producing data. Remaining polish: evidence screenshots and (optionally) the deeper reconciliation
-scripts.
+**Fully validated: 18/18 setup verification + 21/21 reconciliation/DQ, all PASS.** The platform
+runs end to end on synthetic data in a live Snowflake account; every layer reconciles and every
+integrity check passes. Two defects surfaced during execution (R10 concentration, R03 duplicate
+alerts), were fixed, and re-verified. Remaining polish: capture evidence screenshots.

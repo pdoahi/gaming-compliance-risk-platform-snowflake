@@ -192,9 +192,9 @@ risks/limitations, and what the next phase does.
 | 14 | Power BI integration package | ✅ Complete |
 | 15 | Final documentation & portfolio polish | ✅ Complete |
 
-> **✅ Built and executed.** All 15 phases are complete, and the platform has been **run and
-> verified in a Snowflake trial (2026-07-02) — a clean 18/18 on the setup verification**, with
-> all four fact tables populated and all 11 AML typologies firing
+> **✅ Built, executed, and validated.** All 15 phases are complete, and the platform has been
+> **run in a Snowflake trial (2026-07-02) and fully validated — 18/18 setup verification and
+> 21/21 reconciliation/DQ**, with all 11 AML typologies firing and every layer reconciling
 > ([details](#validation-and-execution-status)). Build it yourself with the
 > [Deployment Guide](docs/deployment_guide.md) — the in-database synthetic data generator means
 > no files to upload. Scope and caveats: [Portfolio Limitations](docs/portfolio_limitations.md).
@@ -203,17 +203,17 @@ risks/limitations, and what the next phase does.
 
 ## Validation and Execution Status
 
-**Executed in Snowflake on 2026-07-02.** The full pipeline — setup → ingestion + in-database
-synthetic data → staging → core model → AML rules → STR workflow → reporting views — built
-successfully, and the one-shot setup verification passed **18/18**: all four fact tables
-populated (5,310 transactions, 5,820 alerts, 3,051 STR cases, 36 market months), **all 11 AML
-typologies firing**, and every reporting view returning. The actual verification grid is recorded
-in [`docs/validation_results.md`](docs/validation_results.md).
+**Executed in Snowflake on 2026-07-02, and fully validated.** The full pipeline — setup →
+ingestion + in-database synthetic data → staging → core model → AML rules → STR workflow →
+reporting views — built successfully and passed **18/18 setup verification + 21/21
+reconciliation/DQ** (all counts and values reconcile end-to-end). Final data: 5,310 transactions,
+**5,749 alerts** (all 11 typologies), 3,051 STR cases, 36 market months. Two defects found during
+execution (R10 concentration, R03 duplicate alerts) were fixed and re-verified. Full results:
+[`docs/validation_results.md`](docs/validation_results.md).
 
-**Status: `Executed — setup verification passed (18/18)`.**
+**Status: `Executed & validated — 18/18 + 21/21`.**
 
-Remaining polish (not blockers): capture evidence screenshots and, optionally, run the deeper
-reconciliation / data-quality scripts in `snowflake/07_data_quality/00–04`.
+Remaining polish (not a blocker): capture evidence screenshots.
 
 | Resource | Purpose |
 |---|---|
