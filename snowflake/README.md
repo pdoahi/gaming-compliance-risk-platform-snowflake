@@ -42,7 +42,7 @@ GAMING_COMPLIANCE_DB
 
 ## Execution status
 
-These scripts are **authored and statically reviewed** but **not yet executed** against a live
-Snowflake account. Status: **Pending Manual Snowflake Execution.** To run the whole platform in
-order, follow [`../docs/deployment_guide.md`](../docs/deployment_guide.md); record outcomes in
-[`../docs/validation_results.md`](../docs/validation_results.md).
+These scripts were **executed in a Snowflake trial on 2026-07-02** and the one-shot setup
+verification passed **18/18** (all 11 AML typologies firing). Status: **Executed.** To run the
+whole platform in order yourself, follow [`../docs/deployment_guide.md`](../docs/deployment_guide.md);
+the recorded results are in [`../docs/validation_results.md`](../docs/validation_results.md).

@@ -1,11 +1,9 @@
 # Manual Snowflake Test Plan
 
-> **Execution status: `Pending Manual Snowflake Execution`.** The validation scripts have been
-> **prepared but not executed** in this environment. This is the practical checklist to run the
-> platform and validate it in a Snowflake account of your own. Synthetic data only.
-
-> Manual Snowflake execution is required. Validation scripts have been prepared but not
-> executed in this environment.
+> **Execution status: `Executed 2026-07-02` (18/18 setup verification).** This runbook was used
+> to run the platform in a Snowflake trial; it remains the **reusable checklist** for running it
+> again in any Snowflake account. Recorded results: [`validation_results.md`](validation_results.md).
+> Synthetic data only.
 
 Pair this with the full runbook in [`deployment_guide.md`](deployment_guide.md); this document
 adds the **validation focus** and **smoke-test queries**.

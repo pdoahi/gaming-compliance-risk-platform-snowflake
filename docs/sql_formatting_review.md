@@ -51,6 +51,7 @@ before cross-domain joins, market firewall intact — and is documented in
 ## Verdict
 
 The SQL is **easier for a reviewer to read** after this pass (explicit reporting-view grains,
-explicit governance demo caveat) and remains **logic-identical**. Because the scripts are still
-`Pending Manual Snowflake Execution`, correctness is confirmed structurally here and must be
-confirmed at runtime per [`validation_results.md`](validation_results.md).
+explicit governance demo caveat) and remains **logic-identical**. Correctness was confirmed
+**structurally** here and has since been **confirmed at runtime** — the platform ran end to end
+in Snowflake on 2026-07-02 with a 18/18 setup verification (see
+[`validation_results.md`](validation_results.md)).
