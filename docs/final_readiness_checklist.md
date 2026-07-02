@@ -19,12 +19,15 @@
 | No broken internal links introduced | ✅ Verified | link check over `docs/` and README | See commit validation |
 | Reviewable in under 5 minutes | ✅ Yes | README "Review in 5 minutes" + roadmap + this checklist | Deep-dive paths provided |
 | Technical reviewer can go deeper | ✅ Yes | `docs/` (architecture, model, AML/STR, governance, validation) + numbered SQL | Layered docs + runnable scripts |
-| Execution evidence present | ⏳ Pending | `screenshot_capture_guide.md`; README "Execution Evidence" = Pending | Correctly empty; no fabricated screenshots |
-| Live validation results recorded | ⏳ Pending | `validation_results.md` placeholders | Fill after a real run |
+| Platform executed live in Snowflake | ✅ Done | `validation_results.md` (2026-07-02, 18/18) | Full pipeline ran; all 11 typologies firing |
+| Live validation results recorded | ✅ Done | `validation_results.md` (real numbers, 2026-07-02) | Actual run output, not placeholders |
+| Execution evidence (screenshots) present | ⏳ Pending | `screenshot_capture_guide.md`; README "Execution Evidence" | Textual 18/18 grid recorded; images still to capture |
+| Deeper reconciliation scripts run | ⏳ Optional | `07_data_quality/00–04` | Setup verification passed; these are the optional next layer |
 
 ## Summary
 
-**Presentation-ready as a documented, statically-reviewed Snowflake implementation.** Every
-document is internally consistent and honest about the single open item: the project has not yet
-been executed against a live Snowflake account. Completing that run — and capturing the evidence
-— is the next real-world step ([`next_real_world_step.md`](next_real_world_step.md)).
+**Presentation-ready — and now executed.** The platform was run in a Snowflake trial on
+2026-07-02 with a clean **18/18** setup verification
+([`validation_results.md`](validation_results.md); all 11 AML typologies firing). The remaining
+polish is capturing evidence screenshots and, optionally, the deeper reconciliation scripts; the
+Cursor rebuild stays a later exercise ([`next_real_world_step.md`](next_real_world_step.md)).

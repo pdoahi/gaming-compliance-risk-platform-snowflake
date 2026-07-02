@@ -1,8 +1,10 @@
 # Execution Proof Checklist
 
-> **Status: `Pending Manual Snowflake Execution`.** This is the tick-box record that turns the
-> repo from a *documented implementation* into a *proven* one. Nothing is checked yet — check
-> each box only after you have actually done it in Snowflake. Do not pre-tick.
+> **Status: `Executed — 2026-07-02`.** Sections A–C (environment, build, smoke tests) were
+> completed in a Snowflake trial and verified by the **18/18 setup-verification grid** (recorded
+> in [`validation_results.md`](validation_results.md)). Remaining: **D** (deeper DQ /
+> reconciliation scripts, optional), **F** (evidence screenshots), **G** (repo-evidence links).
+> The boxes below track those remaining items — tick them as you complete them; don't pre-tick.
 
 Legend: `[ ]` not done · `[~]` in progress · `[x]` done (with evidence).
 
@@ -65,4 +67,6 @@ Legend: `[ ]` not done · `[~]` in progress · `[x]` done (with evidence).
 
 ---
 
-**Sign-off (after a real run):** executed by `<name>` on `<date>`; overall result `<PASS/PARTIAL/FAIL>`.
+**Sign-off:** executed by the repository owner on **2026-07-02**; setup-verification result
+**18/18 PASS** (build + smoke tests, all 11 AML typologies firing). Deeper reconciliation scripts
+and evidence screenshots remain.

@@ -192,43 +192,44 @@ risks/limitations, and what the next phase does.
 | 14 | Power BI integration package | ✅ Complete |
 | 15 | Final documentation & portfolio polish | ✅ Complete |
 
-> **✅ All 15 build phases complete** — every layer is authored, documented, and statically
-> reviewed. **Live Snowflake execution and validation are the pending next step** (see
-> [Validation and Execution Status](#validation-and-execution-status)). Build it yourself with
-> the [Deployment Guide](docs/deployment_guide.md) — the in-database synthetic data generator
-> means no files to upload. Scope and caveats: [Portfolio Limitations](docs/portfolio_limitations.md).
+> **✅ Built and executed.** All 15 phases are complete, and the platform has been **run and
+> verified in a Snowflake trial (2026-07-02) — a clean 18/18 on the setup verification**, with
+> all four fact tables populated and all 11 AML typologies firing
+> ([details](#validation-and-execution-status)). Build it yourself with the
+> [Deployment Guide](docs/deployment_guide.md) — the in-database synthetic data generator means
+> no files to upload. Scope and caveats: [Portfolio Limitations](docs/portfolio_limitations.md).
 
 ---
 
 ## Validation and Execution Status
 
-The Snowflake SQL implementation scripts are **prepared for execution**. **Manual Snowflake
-execution and validation are required before claiming the platform has been fully tested.** No
-script has been executed against a live account from this environment, so **no check is claimed
-as passed** — the validation scripts are authored and statically reviewed only.
+**Executed in Snowflake on 2026-07-02.** The full pipeline — setup → ingestion + in-database
+synthetic data → staging → core model → AML rules → STR workflow → reporting views — built
+successfully, and the one-shot setup verification passed **18/18**: all four fact tables
+populated (5,310 transactions, 5,820 alerts, 3,051 STR cases, 36 market months), **all 11 AML
+typologies firing**, and every reporting view returning. The actual verification grid is recorded
+in [`docs/validation_results.md`](docs/validation_results.md).
 
-**Status: `Pending Manual Snowflake Execution`.**
+**Status: `Executed — setup verification passed (18/18)`.**
 
-**Next real-world step:** execute the project in Snowflake, run validation checks, capture proof
-screenshots, and update [`docs/validation_results.md`](docs/validation_results.md).
+Remaining polish (not blockers): capture evidence screenshots and, optionally, run the deeper
+reconciliation / data-quality scripts in `snowflake/07_data_quality/00–04`.
 
 | Resource | Purpose |
 |---|---|
-| [`docs/next_real_world_step.md`](docs/next_real_world_step.md) | The exact next step: run it live in Snowflake, then Cursor later |
+| [`docs/validation_results.md`](docs/validation_results.md) | The recorded 18/18 verification results (2026-07-02) |
+| [`docs/pre_flight_dry_run_review.md`](docs/pre_flight_dry_run_review.md) | Static review that predicted the R10 fix confirmed live |
 | [`docs/manual_snowflake_test_plan.md`](docs/manual_snowflake_test_plan.md) | Ordered run + smoke-test queries |
 | [`docs/execution_proof_checklist.md`](docs/execution_proof_checklist.md) | Tick-box proof of what ran |
-| [`docs/validation_results.md`](docs/validation_results.md) | Results template to fill in after execution |
-| [`docs/final_presentation_audit.md`](docs/final_presentation_audit.md) | What's complete vs pending |
+| [`docs/next_real_world_step.md`](docs/next_real_world_step.md) | Remaining steps (evidence, then Cursor later) |
 
 ## Execution Evidence
 
-_Status: **Pending** — no execution screenshots exist yet, and none are fabricated._
-
-After you run the platform in Snowflake, capture the evidence listed in
-[`docs/screenshot_capture_guide.md`](docs/screenshot_capture_guide.md) (database/schema layout,
-populated tables, AML alerts by typology, STR cases, reporting views returning rows, validation
-results, and Snowsight query history), add the images under `docs/evidence/`, and link them
-here with the execution date.
+**Executed 2026-07-02** — verified by the 18/18 setup-verification grid recorded in
+[`docs/validation_results.md`](docs/validation_results.md). **Screenshot capture is in progress:**
+follow [`docs/screenshot_capture_guide.md`](docs/screenshot_capture_guide.md), save images under
+`docs/evidence/`, and link them here. _No screenshots are fabricated — images appear only once
+they exist._
 
 ---
 
