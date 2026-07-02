@@ -58,9 +58,10 @@ evidence screenshots and the optional deeper reconciliation scripts.
 
 ## 4. Validation-document honesty
 
-- `Honest.` `validation_framework.md`, `post_phase10_validation_results.md`, and the new
-  `validation_results.md` all state that scripts are authored but **not executed**, and mark
-  results `Pending Manual Snowflake Execution`. No pass is claimed anywhere.
+- `Honest.` `validation_results.md` now records the **executed** 18/18 setup verification
+  (2026-07-02) with real numbers. The deeper reconciliation / DQ scripts described in
+  `validation_framework.md` and `post_phase10_validation_results.md` remain **not yet run** and
+  are still labelled as such — no pass is claimed for those.
 
 ## 5. Skills matrix alignment
 

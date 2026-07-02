@@ -1,12 +1,12 @@
 # Final Readiness Checklist
 
-> Final consistency review before presenting the repo. The one intentional "not done" is **live
-> Snowflake execution** — which is correctly represented everywhere as
-> `Pending Manual Snowflake Execution`.
+> Final consistency review before presenting the repo. The platform has now been **executed in
+> Snowflake (2026-07-02, 18/18)**; the remaining open items are evidence screenshots and the
+> optional deeper reconciliation scripts.
 
 | Item | Status | Evidence | Notes |
 |---|---|---|---|
-| README status matches validation docs | ✅ Consistent | README "Validation and Execution Status" + `validation_results.md` both say `Pending Manual Snowflake Execution` | No "fully working" claim anywhere |
+| README status matches validation docs | ✅ Consistent | README "Validation and Execution Status" + `validation_results.md` both say `Executed 2026-07-02 (18/18)` | Status matches across docs |
 | Skills matrix matches actual files | ✅ Fixed | `snowflake_skills_matrix.md` | Streams/Tasks/Snowpark/masking moved from 🔜 to ✅ with `(optional)`/`(demo pattern)` + "authored ≠ executed" note |
 | Learning audit matches actual files | ✅ Fixed | `snowflake_learning_audit.md` | "Planned later" → "since implemented"; removed the "scripts I run myself" claim |
 | Validation claims are honest | ✅ Honest | `validation_framework.md`, `post_phase10_validation_results.md`, `validation_results.md` | All say authored-not-executed; results are placeholders |
