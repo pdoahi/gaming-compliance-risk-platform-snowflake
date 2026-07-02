@@ -1,9 +1,10 @@
 # Interview Talking Points
 
 > A concise script for talking about this project in interviews. Honest throughout: it's a
-> **portfolio-grade, synthetic** Snowflake implementation, and the next real step is executing
-> it live. Execution proof is what turns a *documented implementation* into an *interview-ready
-> technical portfolio project*.
+> **portfolio-grade, synthetic** Snowflake implementation that has been **executed and validated
+> in a Snowflake trial** (2026-07-02: 18/18 setup verification + 21/21 reconciliation/DQ). The
+> execution — including two real bugs caught and fixed by the validation framework — is what
+> makes this an *interview-ready technical portfolio project*, not just a documented design.
 
 ---
 
@@ -14,9 +15,10 @@
 > monitoring, generate suspicious-transaction (STR) cases with SLAs, track player/account risk,
 > and report market/GGR performance. It goes RAW → STAGING → CORE → REPORTING → BI, with 11
 > explainable AML rules, a dimensional model, governance demo patterns, a data-quality
-> framework, and a Power BI-ready semantic layer. All data is synthetic. It's fully authored and
-> documented across 15 phases; my next step is executing it end-to-end in a Snowflake trial and
-> capturing validation evidence."
+> framework, and a Power BI-ready semantic layer. All data is synthetic. I built it in 15
+> phases and **ran and validated it end-to-end in a Snowflake trial** — 18/18 setup checks plus a
+> 21/21 reconciliation where every layer ties out, and the validation caught two real bugs I
+> fixed and re-verified."
 
 ## Technical architecture summary
 
@@ -71,8 +73,8 @@ into both compliance health and market performance.
 - **Synthetic data** — no real players/customers; alert volumes are demonstration artifacts.
 - **Governance is a demo pattern** — role-only logic and a hard-coded region, not production
   access control.
-- **Manual Snowflake execution still required** — authored and statically reviewed, not yet run
-  live from my build environment, so nothing is claimed as passed.
+- **Synthetic data** — executed and validated live (18/18 + 21/21), but the figures are
+  demonstration artifacts, not real base rates; no real customer data or regulatory integration.
 - **No regulatory-system integration**, no production deployment, rule-based (not ML) detection,
   and SCD Type 1 (Type 2 is on the roadmap).
 
@@ -87,9 +89,12 @@ into both compliance health and market performance.
 > deliberate about grain: market/GGR data is kept on its own monthly grain so it can't
 > contaminate transaction-level AML metrics. I added governance demo patterns — masking,
 > row-access, classification tags, Time Travel — and a data-quality/reconciliation framework so
-> the numbers can be trusted. I built it in 15 validated phases with documentation at each step.
-> I'm careful to say it's authored and reviewed but not yet executed live — my immediate next
-> step is running it end-to-end in a Snowflake trial, validating it, and capturing evidence."
+> the numbers can be trusted. I built it in 15 validated phases with documentation at each step,
+> then ran it end-to-end in a Snowflake trial and validated it — 18/18 setup checks plus a 21/21
+> reconciliation where every layer ties out. That process actually caught two real bugs — a rule
+> that silently produced zero alerts, and a self-join that created duplicate alert IDs — which I
+> diagnosed, fixed, and re-verified. I think being able to say 'my own validation caught these
+> and here's the proof they're fixed' says more than a green checkmark would."
 
 ## Rapid answers
 
@@ -105,13 +110,16 @@ cases, market performance), with surrogate keys and informational FKs.
 never transaction/alert/case facts — and reporting views that pre-aggregate to each key before
 any cross-domain join, so nothing fans out.
 
-**How did you validate the platform?** A data-quality suite (duplicates, null keys, orphans,
-SLA consistency), reconciliation across every layer (RAW→…→REPORTING, counts and values), and
-per-phase readiness gates — each returning `PASS`/`FAIL`/`REVIEW`. They're authored; running
-them live is the pending step.
+**How did you validate the platform?** I ran it in a Snowflake trial: an 18-check setup
+verification (all four facts populated, all 11 typologies firing, every view returning) and a
+21-check reconciliation/DQ grid where counts and values tie end-to-end (RAW→…→REPORTING — e.g.
+alerts CORE = view, transaction value STG = CORE to the cent). It caught two real defects — R10
+silently firing zero alerts (an external counterparty resolving to a NULL key) and R03 creating
+duplicate alert IDs (a self-join fanning out) — which I fixed and re-verified to a clean 21/21.
 
-**What would you improve next?** Execute and validate live; then SCD Type 2 history, a real
-KYC/CRM source, tuned/ML detection, dynamic entitlement mapping for governance, and CI/CD.
+**What would you improve next?** Build the Power BI report on the semantic layer; then SCD Type 2
+history, a real KYC/CRM source, tuned/ML detection, dynamic entitlement mapping for governance,
+and CI/CD.
 
 **What did you learn about Snowflake?** Separation of storage and compute (right-sizing
 warehouses, auto-suspend for cost), the role hierarchy and least privilege, `TRANSIENT` vs
@@ -119,6 +127,7 @@ Fail-safe trade-offs, load lineage via stage metadata, and native governance (ma
 policies, tags, Time Travel).
 
 **What is your next real-world step for this project?**
-> "The next real-world step is to execute the full project in Snowflake, run validation checks,
-> capture evidence screenshots, update the validation results, and then connect Power BI to the
-> reporting views."
+> "It's already executed and validated in Snowflake (18/18 + 21/21). The next steps are capturing
+> the evidence screenshots, building the Power BI report on the reporting-view semantic layer, and
+> adding SCD Type 2 history — and I plan to rebuild parts of it in Cursor as a deeper hands-on
+> learning exercise."
