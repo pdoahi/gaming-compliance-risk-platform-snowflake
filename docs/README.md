@@ -37,6 +37,7 @@ column records which phase produced each document.
 | Document | Purpose |
 |---|---|
 | [`final_presentation_audit.md`](final_presentation_audit.md) | Complete vs pending, by area (classification-tagged) |
+| [`pre_flight_dry_run_review.md`](pre_flight_dry_run_review.md) | Static end-to-end trace before the live run (2 generator bugs found & fixed) |
 | [`next_real_world_step.md`](next_real_world_step.md) | The exact next step: run it live in Snowflake (before any Cursor rebuild) |
 | [`manual_snowflake_test_plan.md`](manual_snowflake_test_plan.md) | Ordered run + smoke-test queries |
 | [`execution_proof_checklist.md`](execution_proof_checklist.md) | Tick-box proof of what ran |

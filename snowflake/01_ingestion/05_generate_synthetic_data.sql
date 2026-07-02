@@ -138,12 +138,17 @@ rapid AS (
     FROM prof p CROSS JOIN n2 x
     WHERE p.is_rapid
 ),
-/* -- (e) counterparty concentration: 4 x 6,000 to same payee -> R10 --------- */
+/* -- (e) counterparty concentration: 4 x 6,000 to same payee -> R10 ---------
+   NOTE: R10 keys on COUNTERPARTY_ACCOUNT_KEY, which the fact loader resolves via
+   a lookup into DIM_ACCOUNT. DIM_ACCOUNT only contains ORIGINATING accounts, so
+   the shared payee must be an internal account id that exists in the population
+   ('A00007' — a plain account) or the counterparty key would be NULL and R10
+   (WHERE COUNTERPARTY_ACCOUNT_KEY IS NOT NULL) would never fire.               */
 conc AS (
     SELECT
         'TC' || LPAD(p.an, 5, '0') || LPAD(x.n, 2, '0')                     AS transaction_id,
         DATEADD(hour, x.n * 30, DATEADD(day, MOD(p.an * 29, 660), DATE '2023-11-01')) AS ts,  -- TIMESTAMP; ~4 days apart
-        p.player_id, p.account_id, 'A99999'                                  AS cp,
+        p.player_id, p.account_id, 'A00007'                                  AS cp,
         'Withdrawal'                                                         AS ttype,
         'Bank Transfer'                                                      AS pf,
         6000                                                                 AS amt,
@@ -207,7 +212,9 @@ enriched AS (
     FROM calc
 )
 SELECT
-    'FY' || fy || '-Q' || fq                                        AS fiscal_year_quarter,
+    -- 6-char 'FYnnQn' to fit FACT_MARKET_PERFORMANCE.FISCAL_YEAR_QUARTER VARCHAR(6)
+    -- and match the DIM_DATE fiscal-quarter convention ('FY' + 2-digit FY + 'Q' + quarter).
+    'FY' || LPAD(MOD(fy, 100), 2, '0') || 'Q' || fq                 AS fiscal_year_quarter,
     yr || '-' || LPAD(mon, 2, '0')                                  AS year_month,
     TO_VARCHAR(wagers_m)                                            AS cash_wagers_m,
     TO_VARCHAR(naggr_m)                                             AS naggr_m,
