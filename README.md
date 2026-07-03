@@ -284,6 +284,9 @@ On the synthetic dataset (illustrative — see the caveat below):
   **99.8% recall** (563 of 564 planted laundering transactions caught) at **17.3% precision**
   (F1 = 0.30) — the high-recall, high-false-positive profile characteristic of rule-based AML,
   which the risk scoring and STR triage workflow exist to manage.
+- **ML baseline** — a logistic-regression model on the same features reaches **ROC-AUC 0.78**
+  ([`notebooks/03_ml_baseline.ipynb`](notebooks/03_ml_baseline.ipynb)), illustrating a hybrid
+  rules-plus-ML approach; the transparent rules stay the primary, explainable control.
 
 > **Caveat.** The recall is *optimistic by construction* — the synthetic laundering patterns are
 > the ones the rules target. The low precision reflects that the label marks only the
@@ -291,9 +294,8 @@ On the synthetic dataset (illustrative — see the caveat below):
 > transactions; on real, unlabelled data these figures would shift and thresholds would need
 > recalibration. Not production performance.
 
-Charted end to end in
-[`notebooks/01_reporting_analysis.ipynb`](notebooks/01_reporting_analysis.ipynb) (run against a
-live account to render the figures).
+Charted and modelled end to end in the [`notebooks/`](notebooks) — reporting analysis, data
+profiling, and the ML baseline (executed against the live Snowflake account, outputs rendered).
 
 ---
 
