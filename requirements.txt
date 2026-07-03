@@ -1,0 +1,8 @@
+# For the analysis notebook (notebooks/01_reporting_analysis.ipynb) and the
+# optional Snowpark example (snowflake/09_snowpark/). Synthetic data only; no
+# credentials live here — supply your Snowflake connection via connections.toml
+# or SNOWFLAKE_* environment variables (SSO / browser auth recommended).
+snowflake-connector-python[pandas]>=3.5
+pandas>=2.0
+matplotlib>=3.7
+snowflake-snowpark-python>=1.11   # optional, only for snowflake/09_snowpark

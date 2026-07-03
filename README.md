@@ -27,6 +27,22 @@ analytics platform, delivered one validated phase at a time, on synthetic data.
 
 ---
 
+## Executive Summary
+
+This project delivers a compliance and risk analytics platform for a regulated online-gaming
+operator on **Snowflake**, end to end: AML transaction monitoring, an STR case workflow with
+SLAs, player/account risk, and market/GGR reporting — through a layered warehouse
+(RAW → STAGING → CORE → REPORTING) with RBAC governance and a data-quality framework.
+
+It was **built, executed, and validated in a Snowflake trial** (2026-07-02): 18/18 setup
+verification and 21/21 reconciliation/DQ, with all **11 AML rule typologies** firing. On the
+synthetic dataset the engine raised **5,749 alerts** across **5,310 transactions**, escalated the
+riskiest into **3,051 STR cases**, and produced a 36-month market/GGR series. All data is
+synthetic and the figures are illustrative — see [Key Findings](#key-findings) and
+[Portfolio Scope and Limitations](#portfolio-scope-and-limitations).
+
+---
+
 ## Overview
 
 This project shows how a **compliance and risk intelligence platform** for a regulated
@@ -248,6 +264,34 @@ shown; the full 21-row grid is recorded in [`docs/validation_results.md`](docs/v
 
 ![Reconciliation & DQ (1/2)](docs/evidence/04_reconciliation_1.png)
 ![Reconciliation & DQ (2/2)](docs/evidence/04_reconciliation_2.png)
+
+---
+
+## Key Findings
+
+On the synthetic dataset (illustrative — see the caveat below):
+
+- **Coverage** — the AML engine raised **5,749 alerts** across **all 11 typologies**. Dormant-
+  account reactivation (R08, 2,371), large transactions (R01, 827), and high-risk customers
+  (R09, 623) dominate; counterparty concentration (R10) is rarest (57).
+- **Escalation & workflow** — **89%** of alerts escalated (risk ≥ 70), producing **3,051** STR
+  cases: **1,175 STRs filed** (38.5% conversion), **63.8% SLA compliance**, and a **9.9-day**
+  average investigation time.
+- **Market / GGR** — a 36-month synthetic series: **~$20.9B wagers**, **~$1.63B GGR**, a stable
+  **~7.8% hold**.
+- **Detection performance** — the engine can be scored against its synthetic `IS_LAUNDERING`
+  ground-truth label (recall / precision / F1) via
+  [`snowflake/07_data_quality/08_detection_performance.sql`](snowflake/07_data_quality/08_detection_performance.sql)
+  — the SQL analog of a model-validation notebook.
+
+> **Caveat (optimistic by construction).** The synthetic laundering patterns are the ones the
+> rules target, so these figures show the rules detect their intended typologies — they are
+> **not** expected production performance. On real, unlabelled data both recall and precision
+> would be lower and thresholds would need recalibration.
+
+Charted end to end in
+[`notebooks/01_reporting_analysis.ipynb`](notebooks/01_reporting_analysis.ipynb) (run against a
+live account to render the figures).
 
 ---
 
