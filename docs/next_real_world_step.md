@@ -1,11 +1,12 @@
 # Next Real-World Step
 
-> **The next real-world step is to execute the project in a Snowflake trial or Snowflake
-> environment, run all validation checks, capture proof screenshots, and update the repository
-> with actual validation evidence.**
+> **The core next step — execute and validate the project in Snowflake — has been completed
+> (2026-07-02: 18/18 setup verification + 21/21 reconciliation/DQ; see
+> [`validation_results.md`](validation_results.md)).**
 
-This is the single highest-value action for the project right now. Everything is authored and
-statically reviewed; what remains is to **prove it runs**.
+The project is built, executed, and validated. The steps below remain a **reusable runbook** for
+re-running it in any Snowflake account; the remaining forward step is the optional Cursor rebuild
+(Step 6).
 
 ## Priority order (do these in sequence)
 
@@ -15,8 +16,7 @@ statically reviewed; what remains is to **prove it runs**.
 3. Run validation scripts
 4. Capture screenshots / evidence
 5. Update README + validation documents
-6. Prepare interview talking points
-7. Rebuild selected parts in Cursor later (deeper learning) — NOT before step 5
+6. Rebuild selected parts in Cursor later (deeper learning) — NOT before step 5
 ```
 
 > **Snowflake execution comes before any Cursor rebuild.** The Cursor rebuild is a separate
@@ -80,11 +80,6 @@ Screenshot (see [`screenshot_capture_guide.md`](screenshot_capture_guide.md)):
   section.
 - Switch README **Validation and Execution Status** to the "executed on [DATE]" wording.
 
-## Step 6 — Interview preparation
-- Use [`interview_talking_points.md`](interview_talking_points.md) to rehearse the walkthrough.
-- Execution proof is what turns this from *a documented implementation* into an
-  *interview-ready technical portfolio project*.
-
-## Step 7 — (Later) Cursor rebuild
-Only after steps 1–6: rebuild selected parts in Cursor as a deeper hands-on exercise. This is
+## Step 6 — (Later) Cursor rebuild
+Only after steps 1–5: rebuild selected parts in Cursor as a deeper hands-on exercise. This is
 explicitly a **later** activity.

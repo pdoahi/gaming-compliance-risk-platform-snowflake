@@ -134,7 +134,7 @@ Player / Account → Transaction → AML Alert → Investigation Case → STR Ou
 
 ### FACT_MARKET_PERFORMANCE
 - **Business process:** monthly online-gaming market / GGR reporting.
-- **Grain:** **one row per reporting month.** ⚠️ Different grain from the AML facts.
+- **Grain:** **one row per reporting month.** Different grain from the AML facts.
 - **PK:** `MARKET_PERF_KEY`.
 - **FK:** `DATE_KEY`→DIM_DATE (month start) **only**. **Never** joined to transaction, alert,
   or case facts.

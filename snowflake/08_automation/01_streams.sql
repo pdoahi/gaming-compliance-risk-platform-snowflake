@@ -9,7 +9,7 @@
    Example: a stream over FACT_TRANSACTIONS so AML rules can run only on NEW
    transactions instead of the whole table.
 
-   💲 COST NOTE: streams themselves are (almost) free — they store offsets, not
+   COST NOTE: streams themselves are (almost) free — they store offsets, not
    data — but the TASKS that consume them (02_tasks.sql) use a warehouse. Keep the
    consuming task infrequent and gated on SYSTEM$STREAM_HAS_DATA.
 

@@ -51,29 +51,29 @@ deliberate Snowflake choices a beginner wouldn't get for free:
 
 ## Concepts since implemented (Phases 12–15)
 
-These were "planned for later" during the early phases and are now **authored in the repo**
-(implemented and statically reviewed; live execution still pending — see
+These were "planned for later" during the early phases and are now **implemented in the repo**
+and part of the executed & validated build (2026-07-02, 18/18 + 21/21 — see
 [`validation_results.md`](validation_results.md)):
 
 | Concept | Status | Where it lives |
 |---|---|---|
-| Streams (change tracking) | ✅ Implemented (optional) | `08_automation/01_streams.sql` |
-| Tasks (scheduled transforms) | ✅ Implemented (optional, suspended) | `08_automation/02_tasks.sql` |
-| Snowpark Python (risk scoring) | ✅ Implemented (optional) | `09_snowpark/aml_risk_scoring_example.py` |
-| Masking / row-access policies | ✅ Implemented (demo pattern) | `00_setup/04_governance_policies.sql` |
-| Data-classification tags | ✅ Implemented (demo pattern) | `00_setup/04_governance_policies.sql` |
-| Time Travel / retention | ✅ Implemented (demo pattern) | `00_setup/04_governance_policies.sql` |
-| Synthetic data generator (in-DB) | ✅ Implemented | `01_ingestion/05_generate_synthetic_data.sql` |
+| Streams (change tracking) | Implemented (optional) | `08_automation/01_streams.sql` |
+| Tasks (scheduled transforms) | Implemented (optional, suspended) | `08_automation/02_tasks.sql` |
+| Snowpark Python (risk scoring) | Implemented (optional) | `09_snowpark/aml_risk_scoring_example.py` |
+| Masking / row-access policies | Implemented (demo pattern) | `00_setup/04_governance_policies.sql` |
+| Data-classification tags | Implemented (demo pattern) | `00_setup/04_governance_policies.sql` |
+| Time Travel / retention | Implemented (demo pattern) | `00_setup/04_governance_policies.sql` |
+| Synthetic data generator (in-DB) | Implemented | `01_ingestion/05_generate_synthetic_data.sql` |
 
 ## Still open (deliberate scope boundaries)
 
 | Concept | Status | Notes |
 |---|---|---|
-| SCD Type 2 (KYC/risk history) | 🗺️ Roadmap | documented in `data_model.md` §6 |
-| CI/CD deployment (dbt/native) | 🗺️ Future | out of scope for a portfolio build |
-| Zero-copy cloning demo | 🗺️ Future | Time Travel is shown; cloning is described, not scripted |
-| Rejects handling on `COPY INTO` | 🗺️ Future | generator path avoids file-load errors; `ON_ERROR=CONTINUE` + rejects table would harden the file path |
-| Real customer/KYC master source | 🗺️ Future | dimension attributes are `HASH()`-synthesized today |
+| SCD Type 2 (KYC/risk history) | Roadmap | documented in `data_model.md` §6 |
+| CI/CD deployment (dbt/native) | Future | out of scope for a portfolio build |
+| Zero-copy cloning demo | Future | Time Travel is shown; cloning is described, not scripted |
+| Rejects handling on `COPY INTO` | Future | generator path avoids file-load errors; `ON_ERROR=CONTINUE` + rejects table would harden the file path |
+| Real customer/KYC master source | Future | dimension attributes are `HASH()`-synthesized today |
 
 ## Learning trajectory
 
@@ -81,8 +81,7 @@ Foundations (databases, warehouses, RBAC, ingestion) → transformation (staging
 modeling (dims/facts, surrogate keys, grain) → analytics logic (AML rules, STR SLAs, window
 functions) → serving (reporting views / semantic layer) → **automation (Streams/Tasks),
 in-database Python (Snowpark), governance (masking/row-access/tags/Time Travel), and BI
-enablement (Power BI package)**. The remaining growth step is **execution**: running the whole
-thing in a live Snowflake account and validating it (see
-[`next_real_world_step.md`](next_real_world_step.md)).
+enablement (Power BI package)**. The platform was then **executed and validated** in a Snowflake
+trial (2026-07-02, 18/18 + 21/21; see [`validation_results.md`](validation_results.md)).
 
 See the concrete mapping in [`snowflake_skills_matrix.md`](snowflake_skills_matrix.md).

@@ -54,7 +54,7 @@ Power BI reads **only the `REPORTING` schema** (enforced by the `BI_REPORTING` g
 |---|---|---|
 | Data | Cached in the .pbix; refresh on demand | Live query to Snowflake per interaction |
 | Speed | Fast (in-memory) | Depends on warehouse; slower |
-| Cost | Warehouse runs only on refresh | Warehouse runs on **every** visual interaction 💲 |
+| Cost | Warehouse runs only on refresh | Warehouse runs on **every** visual interaction |
 | Best for | Small/synthetic data (this project), best performance | Very large data, near-real-time needs, or when data can't be cached |
 
 The synthetic dataset is small, so **Import** gives the best performance at the lowest

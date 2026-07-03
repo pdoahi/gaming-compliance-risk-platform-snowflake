@@ -54,7 +54,7 @@ Every check returns `STATUS` = `PASS` / `FAIL` / `REVIEW`.
 3. Then `01_data_quality_checks.sql` and `02_reconciliation_queries.sql`.
 4. Scan the `STATUS` column; investigate every `FAIL`, eyeball every `REVIEW`.
 
-## ⚠️ Manual Test Execution Required
+## Manual Test Execution Required
 
 These scripts are authored to Snowflake syntax but **not executed** in this repo (no live
 connection). Do **not** treat any check as passed until you run them against your account with

@@ -10,10 +10,10 @@
    (03_core_model). Policy creation needs elevated privileges — shown as
    ACCOUNTADMIN; in a real account, delegate via a dedicated security role.
 
-   ⚠️ SYNTHETIC data only. There is no real PII here — these policies DEMONSTRATE
+   SYNTHETIC data only. There is no real PII here — these policies DEMONSTRATE
    the controls a real regulated deployment would use. No secrets appear anywhere.
 
-   ⚠️ DEMO GOVERNANCE PATTERN — NOT production access control. Specifically:
+   DEMO GOVERNANCE PATTERN — NOT production access control. Specifically:
      - The row-access policy hard-codes an allowed region ('REGION-A') for the
        analyst role. Production would resolve entitlements from a user→region
        MAPPING TABLE (or identity-provider claims), not a literal.

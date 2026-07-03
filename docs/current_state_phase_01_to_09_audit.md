@@ -25,15 +25,15 @@ Player / Account  →  Transaction  →  AML Alert  →  STR Case  →  Reportin
 
 | Phase | Deliverables | Files | Status |
 |---|---|---|---|
-| 1 Foundation | README, structure, `.gitignore`, disclaimer, docs index | repo root, `data/`, `docs/README` (via README) | ✅ Complete |
-| 2 Architecture | layered architecture + diagram | `docs/solution_architecture.md`, `diagrams/architecture/*` | ✅ Complete |
-| 3 Data model & ERD | dims/facts spec, logical+physical ERD, SCD2 roadmap | `docs/data_model.md`, `docs/erd.md`, `diagrams/data_model/*` | ✅ Complete |
-| 4 Setup | warehouses, DB/schemas, roles/grants | `snowflake/00_setup/01–03` | ✅ Complete |
-| 5 Ingestion | file formats, stages, RAW tables, COPY INTO | `snowflake/01_ingestion/01–04` | ✅ Complete |
-| 6 Staging | typed tables + transformations + DQ flags | `snowflake/02_staging/01–02` | ✅ Complete |
-| 7 Core model | 6 dims + 4 facts (create + load) | `snowflake/03_core_model/01–04` | ✅ Complete |
-| 8 AML rules | 11 typologies, alert generation, scoring | `snowflake/04_aml_rules/01–03`, `docs/aml_rules_framework.md`, workflow diagram | ✅ Complete |
-| 9 STR workflow | case generation + SLA logic | `snowflake/05_str_workflow/01–02`, `docs/str_workflow.md`, workflow diagram | ✅ Complete |
+| 1 Foundation | README, structure, `.gitignore`, disclaimer, docs index | repo root, `data/`, `docs/README` (via README) | Complete |
+| 2 Architecture | layered architecture + diagram | `docs/solution_architecture.md`, `diagrams/architecture/*` | Complete |
+| 3 Data model & ERD | dims/facts spec, logical+physical ERD, SCD2 roadmap | `docs/data_model.md`, `docs/erd.md`, `diagrams/data_model/*` | Complete |
+| 4 Setup | warehouses, DB/schemas, roles/grants | `snowflake/00_setup/01–03` | Complete |
+| 5 Ingestion | file formats, stages, RAW tables, COPY INTO | `snowflake/01_ingestion/01–04` | Complete |
+| 6 Staging | typed tables + transformations + DQ flags | `snowflake/02_staging/01–02` | Complete |
+| 7 Core model | 6 dims + 4 facts (create + load) | `snowflake/03_core_model/01–04` | Complete |
+| 8 AML rules | 11 typologies, alert generation, scoring | `snowflake/04_aml_rules/01–03`, `docs/aml_rules_framework.md`, workflow diagram | Complete |
+| 9 STR workflow | case generation + SLA logic | `snowflake/05_str_workflow/01–02`, `docs/str_workflow.md`, workflow diagram | Complete |
 | 10 Reporting | 11 reporting views | `snowflake/06_reporting/01–05` | ◑ In progress (this checkpoint) |
 
 ## Snowflake objects expected (after running Phases 1–9 in an account)

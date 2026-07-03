@@ -6,9 +6,9 @@
 
 ## Execution status
 
-- **Static structural review:** ✅ performed in this repo (files, object definitions, keys,
+- **Static structural review:** performed in this repo (files, object definitions, keys,
   grains, view dependencies).
-- **Runtime data checks (A–F in `00_pre_phase10_validation_checks.sql`):** ⏳ **NOT executed**
+- **Runtime data checks (A–F in `00_pre_phase10_validation_checks.sql`):** **NOT executed**
   — no live Snowflake connection in this environment. See *Manual Test Execution Required*.
 
 > **No check is claimed as passed.** The SQL exists and is ready to run; the data-level
@@ -40,7 +40,7 @@ blocking structural defect was found.
 **Blocking issues found: none.** The two fixes are reporting-layer enhancements (Phase 10
 scope), not corrections to earlier phases — no earlier phase was rebuilt.
 
-## ⚠️ Manual Test Execution Required
+## Manual Test Execution Required
 
 Run these in Snowflake and paste the `STATUS` column back here:
 

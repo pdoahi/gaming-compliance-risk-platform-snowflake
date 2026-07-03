@@ -1,4 +1,4 @@
-# Gaming Compliance & Risk Intelligence Platform — Snowflake Edition
+# Gaming Compliance & Risk Intelligence Platform
 
 > A **Snowflake cloud data warehouse** implementation of a regulated
 > online-gaming compliance & risk analytics platform: AML transaction monitoring,

@@ -1,6 +1,6 @@
 # 08_automation — Streams & Tasks (OPTIONAL)
 
-> ⚠️ **Optional layer.** The platform works fully without this — Phases 5–10 do a complete
+> **Optional layer.** The platform works fully without this — Phases 5–10 do a complete
 > batch build/refresh. This folder shows how to make the pipeline **incremental and scheduled**
 > with Snowflake Streams + Tasks. Synthetic data only; no secrets.
 
@@ -20,7 +20,7 @@ new rows -> FACT_TRANSACTIONS -> STREAM (offset of new rows) -> TASK (scheduled,
 Instead of re-scanning every transaction on each run, the stream tells the task exactly which
 rows are new, and the task only fires when there is something to do.
 
-## 💲 Cost cautions (important)
+## Cost cautions (important)
 
 - **Streams are cheap** (they store offsets, not data). **Tasks cost compute per run.**
 - The task is **created SUSPENDED** — nothing runs (or bills) until you `RESUME` it.

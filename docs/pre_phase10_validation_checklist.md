@@ -11,7 +11,7 @@ Each SQL check returns `CHECK_NAME`, `STATUS` (`PASS` / `FAIL` / `REVIEW`), and 
 value. Run the whole script in a Snowflake worksheet (role `DATA_ENGINEER`, warehouse
 `WH_TRANSFORM`) after the synthetic data is loaded, and scan the `STATUS` column.
 
-## ⚠️ Manual Test Execution Required
+## Manual Test Execution Required
 
 These validation queries were **created but not executed** — this project is authored against
 Snowflake syntax but has **no live Snowflake connection in this environment**. Do **not**

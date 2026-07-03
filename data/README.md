@@ -1,6 +1,6 @@
 # data/
 
-> ⚠️ **Synthetic data only.** Everything in this folder is **fabricated and illustrative**.
+> **Synthetic data only.** Everything in this folder is **fabricated and illustrative**.
 > It represents no real individuals, players, customers, transactions, accounts, or market
 > figures, and contains **no personal data, credentials, or secrets**. Do not place real,
 > production, or personally identifiable data here.

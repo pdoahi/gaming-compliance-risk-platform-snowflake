@@ -43,7 +43,6 @@ column records which phase produced each document.
 | [`execution_proof_checklist.md`](execution_proof_checklist.md) | Tick-box proof of what ran |
 | [`validation_results.md`](validation_results.md) | Results template to fill after execution (placeholders only) |
 | [`screenshot_capture_guide.md`](screenshot_capture_guide.md) | Which evidence to capture after a live run |
-| [`interview_talking_points.md`](interview_talking_points.md) | Interview walkthrough + Q&A |
 | [`sql_formatting_review.md`](sql_formatting_review.md) | SQL readability review (no logic changed) |
 | [`final_readiness_checklist.md`](final_readiness_checklist.md) | Final consistency review |
 

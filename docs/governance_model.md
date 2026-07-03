@@ -5,7 +5,7 @@
 > needs. Policy SQL is in
 > [`snowflake/00_setup/04_governance_policies.sql`](../snowflake/00_setup/04_governance_policies.sql).
 
-> ⚠️ **Synthetic data only.** No real people, players, transactions, PII, credentials, or
+> **Synthetic data only.** No real people, players, transactions, PII, credentials, or
 > secrets exist here. These controls **demonstrate** what a real regulated deployment would
 > apply to genuine sensitive data.
 

@@ -27,7 +27,7 @@ as passed**. The runnable checks are in
 **Static conclusion:** the views are structurally sound and designed to reconcile; runtime
 confirmation is pending.
 
-## ⚠️ Manual Test Execution Required
+## Manual Test Execution Required
 
 Run in Snowflake (role `DATA_ENGINEER`, warehouse `WH_REPORTING`) after building the views:
 

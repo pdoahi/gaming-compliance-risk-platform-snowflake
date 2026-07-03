@@ -6,7 +6,7 @@
    the stream from 01, a task can process only new transactions — scheduled,
    hands-off incremental AML alerting.
 
-   💲 COST NOTE: each task RUN uses a warehouse and bills compute. To stay cheap:
+   COST NOTE: each task RUN uses a warehouse and bills compute. To stay cheap:
      - gate on WHEN SYSTEM$STREAM_HAS_DATA(...) so empty runs cost nothing,
      - use an infrequent SCHEDULE,
      - keep the warehouse XSMALL with AUTO_SUSPEND,

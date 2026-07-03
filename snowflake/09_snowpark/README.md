@@ -1,6 +1,6 @@
 # 09_snowpark — Snowpark Python (OPTIONAL)
 
-> ⚠️ **Optional, educational example.** Shows how **in-database Python (Snowpark)** can do AML
+> **Optional, educational example.** Shows how **in-database Python (Snowpark)** can do AML
 > feature engineering + risk scoring without moving data out of Snowflake. Synthetic data only.
 > **No credentials or secrets** are stored in this repo.
 
@@ -30,7 +30,7 @@ Open a **Snowpark Python worksheet** (or deploy as a stored procedure). The runt
 The script reads the connection by **name** via `Session.builder.config("connection_name", ...)`
 and overrides role/warehouse from env vars — so no secret ever appears in the source.
 
-## 💲 Cost note
+## Cost note
 
 Runs on `WH_DATA_SCIENCE` (created XSMALL + `AUTO_SUSPEND`, and **initially suspended**). It
 auto-resumes for the run and suspends after — a single scoring pass is a tiny amount of compute.
