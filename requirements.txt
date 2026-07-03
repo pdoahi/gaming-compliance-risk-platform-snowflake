@@ -5,4 +5,5 @@
 snowflake-connector-python[pandas]>=3.5
 pandas>=2.0
 matplotlib>=3.7
+jupyterlab>=4.0
 snowflake-snowpark-python>=1.11   # optional, only for snowflake/09_snowpark
