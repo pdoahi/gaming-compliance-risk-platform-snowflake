@@ -225,11 +225,31 @@ Remaining polish (not a blocker): capture evidence screenshots.
 
 ## Execution Evidence
 
-**Executed 2026-07-02** — verified by the 18/18 setup-verification grid recorded in
-[`docs/validation_results.md`](docs/validation_results.md). **Screenshot capture is in progress:**
-follow [`docs/screenshot_capture_guide.md`](docs/screenshot_capture_guide.md), save images under
-`docs/evidence/`, and link them here. _No screenshots are fabricated — images appear only once
-they exist._
+**Executed & validated in Snowflake on 2026-07-02** — 18/18 setup verification + 21/21
+reconciliation/DQ (full results in [`docs/validation_results.md`](docs/validation_results.md)).
+Screenshots from the live run (synthetic data):
+
+**Executive KPI snapshot** — 5,310 transactions · 5,749 AML alerts · 3,051 STR cases · GGR 1.63B ·
+hold 7.8% (the one-row view shown transposed so all 17 KPIs are legible):
+
+![Executive KPIs (1/2)](docs/evidence/01_executive_overview_1.png)
+![Executive KPIs (2/2)](docs/evidence/01_executive_overview_2.png)
+
+**AML alerts by typology** — all **11** rules firing (R10 counterparty concentration = 57 after
+the fix); the `ALERTS` column sums to 5,749:
+
+![AML alerts by typology](docs/evidence/02_aml_typologies.png)
+
+**STR workflow summary** — 3,051 cases, 1,175 STRs filed, 38.5% conversion, 63.8% SLA compliance:
+
+![STR workflow summary](docs/evidence/03_str_workflow.png)
+
+**Reconciliation & data quality — 21/21 PASS** — R1–R8 tie end-to-end (`5749 = 5749`,
+`3051 = 3051`, value/GGR reconcile) and duplicate alert IDs = 0 after the R03 fix (rows 1–15
+shown; the full 21-row grid is recorded in [`docs/validation_results.md`](docs/validation_results.md)):
+
+![Reconciliation & DQ (1/2)](docs/evidence/04_reconciliation_1.png)
+![Reconciliation & DQ (2/2)](docs/evidence/04_reconciliation_2.png)
 
 ---
 

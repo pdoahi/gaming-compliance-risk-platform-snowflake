@@ -4,20 +4,19 @@ Screenshots from the live Snowflake run (**executed & validated 2026-07-02**: 18
 verification + 21/21 reconciliation/DQ). Results are recorded in
 [`../validation_results.md`](../validation_results.md).
 
-## Save these files here (exact names)
+## Captured screenshots (linked from the README Execution Evidence section)
 
-The wide one-row views are captured **transposed** (tall metric→value) so every value fits in a
-single screenshot — run `07_data_quality/07_evidence_snapshot.sql` for those.
-
-| File | Capture this (all narrow/tall — fit in one screenshot) |
+| File | Shows |
 |---|---|
-| `01_kpi_snapshot.png` | Query **A** in `07_evidence_snapshot.sql` — executive/AML/STR KPIs, transposed |
-| `02_aml_typologies.png` | Query **B** in `07_evidence_snapshot.sql` — all 11 rules (6 columns) |
-| `03_reconciliation.png` | the 21/21 grid from `06_reconciliation_verification.sql` |
-| `04_setup_verification.png` | the 18/18 grid from `05_setup_verification.sql` |
+| `01_executive_overview_1.png` / `_2.png` | Executive KPI snapshot (transposed) — all 17 KPIs across two shots |
+| `02_aml_typologies.png` | AML alerts by typology — all 11 rules firing (ALERTS sum to 5,749) |
+| `03_str_workflow.png` | STR workflow summary (cases, STRs filed, conversion, SLA) |
+| `04_reconciliation_1.png` / `_2.png` | Reconciliation + DQ grid — R1–R8 + integrity, all PASS (rows 1–15 of 21) |
 
-Optional extras: `05_db_schema_layout.png` (Snowsight → Data → the 7 schemas),
-`06_query_history.png` (Activity → Query History showing successful runs).
+The wide one-row views were captured **transposed** via
+[`../../snowflake/07_data_quality/07_evidence_snapshot.sql`](../../snowflake/07_data_quality/07_evidence_snapshot.sql)
+so every value is legible. The full 21/21 reconciliation grid is recorded in
+[`../validation_results.md`](../validation_results.md).
 
 ## Tips
 - Keep the **query text + result grid** both visible in one shot — self-explanatory evidence.
