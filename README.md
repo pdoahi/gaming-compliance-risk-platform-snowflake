@@ -279,15 +279,17 @@ On the synthetic dataset (illustrative — see the caveat below):
   average investigation time.
 - **Market / GGR** — a 36-month synthetic series: **~$20.9B wagers**, **~$1.63B GGR**, a stable
   **~7.8% hold**.
-- **Detection performance** — the engine can be scored against its synthetic `IS_LAUNDERING`
-  ground-truth label (recall / precision / F1) via
-  [`snowflake/07_data_quality/08_detection_performance.sql`](snowflake/07_data_quality/08_detection_performance.sql)
-  — the SQL analog of a model-validation notebook.
+- **Detection performance** — scored against the synthetic `IS_LAUNDERING` label
+  ([`snowflake/07_data_quality/08_detection_performance.sql`](snowflake/07_data_quality/08_detection_performance.sql)):
+  **99.8% recall** (563 of 564 planted laundering transactions caught) at **17.3% precision**
+  (F1 = 0.30) — the high-recall, high-false-positive profile characteristic of rule-based AML,
+  which the risk scoring and STR triage workflow exist to manage.
 
-> **Caveat (optimistic by construction).** The synthetic laundering patterns are the ones the
-> rules target, so these figures show the rules detect their intended typologies — they are
-> **not** expected production performance. On real, unlabelled data both recall and precision
-> would be lower and thresholds would need recalibration.
+> **Caveat.** The recall is *optimistic by construction* — the synthetic laundering patterns are
+> the ones the rules target. The low precision reflects that the label marks only the
+> deliberately-planted actors while the rules also flag many benign, threshold-crossing
+> transactions; on real, unlabelled data these figures would shift and thresholds would need
+> recalibration. Not production performance.
 
 Charted end to end in
 [`notebooks/01_reporting_analysis.ipynb`](notebooks/01_reporting_analysis.ipynb) (run against a
