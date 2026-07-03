@@ -1,11 +1,11 @@
 # Gaming Compliance & Risk Intelligence Platform — Snowflake Edition
 
-> A production-style **Snowflake cloud data warehouse** implementation of a regulated
+> A **Snowflake cloud data warehouse** implementation of a regulated
 > online-gaming compliance & risk analytics platform: AML transaction monitoring,
 > rule-based suspicious-transaction detection, player/account risk analytics, an STR case
 > workflow with SLA tracking, market/GGR reporting, governance, and Power BI integration.
 
-> ⚠️ **Synthetic data only.** Every dataset in this project is **fabricated and
+> **Synthetic data only.** Every dataset in this project is **fabricated and
 > illustrative**. It contains no real people, players, customers, transactions, or market
 > figures, and no credentials, secrets, or production information. This is an independent
 > **portfolio project** — not affiliated with, endorsed by, or representative of any
@@ -13,7 +13,7 @@
 
 ---
 
-## ⚡ Review this project in 5 minutes
+## Review this project in 5 minutes
 
 1. **What & why** — the [Overview](#overview) and [Business Problem](#business-problem) below.
 2. **Why Snowflake** — the [Why Snowflake](#why-snowflake) section.
@@ -22,19 +22,17 @@
 4. **How it's delivered** — the [Phased Implementation](#phased-implementation) roadmap (15 phases).
 5. **Docs** — the [Documentation Index](docs/README.md).
 
-**TL;DR:** an enterprise-style, layered Snowflake build (RAW → STAGING → CORE → REPORTING →
-BI) of a compliance analytics platform, delivered one validated phase at a time, on
-synthetic data.
+**TL;DR:** a layered Snowflake build (RAW → STAGING → CORE → REPORTING → BI) of a compliance
+analytics platform, delivered one validated phase at a time, on synthetic data.
 
 ---
 
 ## Overview
 
 This project shows how a **compliance and risk intelligence platform** for a regulated
-online-gaming operator could be deployed in a **modern cloud data warehouse (Snowflake)**.
-It preserves the business idea of the original build and re-implements it in a cleaner,
-phased, enterprise style — layered schemas, dimensional modeling, RBAC governance, data
-quality, and BI-ready reporting views.
+online-gaming operator can be deployed on a **modern cloud data warehouse (Snowflake)**. It is
+built with layered schemas, dimensional modeling, RBAC governance, data quality, and BI-ready
+reporting views, delivered one validated phase at a time.
 
 It is designed to demonstrate, end to end:
 
@@ -170,30 +168,30 @@ that produces it.
 ## Phased Implementation
 
 This project is built **one phase at a time**. Each phase is completed, validated,
-documented, and **approved before the next begins** — mirroring a real enterprise delivery
-with quality gates. Each phase reports: files created, validation checks, assumptions,
+documented, and **approved before the next begins** — a staged delivery with quality gates at
+each step. Each phase reports: files created, validation checks, assumptions,
 risks/limitations, and what the next phase does.
 
 | # | Phase | Status |
 |---|---|---|
-| 1 | Project foundation & repository setup | ✅ Complete |
-| 2 | Snowflake solution architecture | ✅ Complete |
-| 3 | Data model & ERD | ✅ Complete |
-| 4 | Snowflake setup scripts (warehouses, DB, schemas, roles) | ✅ Complete |
-| 5 | Ingestion layer (file formats, stages, RAW, COPY INTO) | ✅ Complete |
-| 6 | Staging layer (typed/cleaned) | ✅ Complete |
-| 7 | Core dimensional model (dims + facts) | ✅ Complete |
-| 8 | AML rules engine (alert generation + scoring) | ✅ Complete |
-| 9 | STR case workflow (cases + SLA) | ✅ Complete |
-| 10 | Reporting views | ✅ Complete |
-| 11 | Data quality & reconciliation | ✅ Complete |
-| 12 | Governance & security | ✅ Complete |
-| 13 | Automation & Snowpark examples | ✅ Complete |
-| 14 | Power BI integration package | ✅ Complete |
-| 15 | Final documentation & portfolio polish | ✅ Complete |
+| 1 | Project foundation & repository setup | Complete |
+| 2 | Snowflake solution architecture | Complete |
+| 3 | Data model & ERD | Complete |
+| 4 | Snowflake setup scripts (warehouses, DB, schemas, roles) | Complete |
+| 5 | Ingestion layer (file formats, stages, RAW, COPY INTO) | Complete |
+| 6 | Staging layer (typed/cleaned) | Complete |
+| 7 | Core dimensional model (dims + facts) | Complete |
+| 8 | AML rules engine (alert generation + scoring) | Complete |
+| 9 | STR case workflow (cases + SLA) | Complete |
+| 10 | Reporting views | Complete |
+| 11 | Data quality & reconciliation | Complete |
+| 12 | Governance & security | Complete |
+| 13 | Automation & Snowpark examples | Complete |
+| 14 | Power BI integration package | Complete |
+| 15 | Final documentation & portfolio polish | Complete |
 
-> **✅ Built, executed, and validated.** All 15 phases are complete, and the platform has been
-> **run in a Snowflake trial (2026-07-02) and fully validated — 18/18 setup verification and
+> **Built, executed, and validated.** All 15 phases are complete, and the platform has been
+> **run in a Snowflake trial (2026-07-02) and validated — 18/18 setup verification and
 > 21/21 reconciliation/DQ**, with all 11 AML typologies firing and every layer reconciling
 > ([details](#validation-and-execution-status)). Build it yourself with the
 > [Deployment Guide](docs/deployment_guide.md) — the in-database synthetic data generator means
@@ -203,7 +201,7 @@ risks/limitations, and what the next phase does.
 
 ## Validation and Execution Status
 
-**Executed in Snowflake on 2026-07-02, and fully validated.** The full pipeline — setup →
+**Executed and validated in Snowflake on 2026-07-02.** The full pipeline — setup →
 ingestion + in-database synthetic data → staging → core model → AML rules → STR workflow →
 reporting views — built successfully and passed **18/18 setup verification + 21/21
 reconciliation/DQ** (all counts and values reconcile end-to-end). Final data: 5,310 transactions,
@@ -266,8 +264,8 @@ system (see [`docs/portfolio_limitations.md`](docs/portfolio_limitations.md)).
 
 **What this project demonstrates**
 
-- A layered, **production-style** Snowflake implementation pattern (RAW → STAGING → CORE →
-  REPORTING → BI) built as a **cloud data warehouse simulation**.
+- A layered **Snowflake implementation** (RAW → STAGING → CORE → REPORTING → BI) built as a
+  **cloud data warehouse simulation** on synthetic data.
 - Dimensional modeling, explainable AML rule logic, an STR workflow with SLAs, a **Power
   BI-ready semantic layer**, governance demo patterns, and a data-quality/validation framework.
 
