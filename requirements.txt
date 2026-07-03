@@ -5,5 +5,6 @@
 snowflake-connector-python[pandas]>=3.5
 pandas>=2.0
 matplotlib>=3.7
+scikit-learn>=1.3          # for notebooks/03_ml_baseline
 jupyterlab>=4.0
 snowflake-snowpark-python>=1.11   # optional, only for snowflake/09_snowpark
