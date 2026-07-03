@@ -11,6 +11,12 @@
 > **portfolio project** — not affiliated with, endorsed by, or representative of any
 > regulator, gaming authority, or operator.
 
+> **Part of a two-build portfolio.** This is the **platform build**. The **analyst build**
+> (Python / Jupyter / Power BI) is
+> [Gaming-Compliance-Risk-Platform](https://github.com/pdoahi/Gaming-Compliance-Risk-Platform);
+> the overview and side-by-side comparison live in
+> [gaming-compliance-portfolio](https://github.com/pdoahi/gaming-compliance-portfolio).
+
 ---
 
 ## Review this project in 5 minutes
